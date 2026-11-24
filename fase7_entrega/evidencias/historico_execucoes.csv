@@ -1,0 +1,3 @@
+execucao_id,ciclo,inicio,fim,status,duracao_ms,raw,quarentena,duplicadas,validos,taxa_quarentena_pct,alertas,comandos_atuadores,etapa_com_falha
+20261124-200222-f5d73c,1,2026-11-24T20:02:22,2026-11-24T20:02:22,SUCESSO,627.5,144,3,1,140,2.08,8,2,
+20261124-200224-a8877f,2,2026-11-24T20:02:24,2026-11-24T20:02:25,SUCESSO,586.5,144,3,1,140,2.08,8,2,

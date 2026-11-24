@@ -1,0 +1,20 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+relatorio-testes.xml
+
+# Segredos e dados pessoais (nunca versionar)
+.env
+.env.*
+!.env.example
+integrantes.txt
+
+# Saidas de execucao da operacao (geradas a cada ciclo; a evidencia de referencia fica em fase7_entrega/evidencias/)
+8_Execucao_Monitorada/saida/
+evidencias_docker/
+# Midia pesada
+*.mp4

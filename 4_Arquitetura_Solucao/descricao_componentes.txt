@@ -1,0 +1,115 @@
+====================================================================
+ARQUITETURA INTEGRADA DA SOLUCAO AGROSMART
+Descricao dos componentes
+====================================================================
+
+A arquitetura mostra o fluxo realmente executado nesta entrega e a
+relacao com os modulos das fases anteriores. O diagrama esta em
+diagrama_arquitetura.svg (e .png). O executor integrado roda somente
+a coleta simulada opcional, a preparacao do reprodutor visual, o
+processamento de sensores e o motor de decisao. O fluxo atual e:
+
+  Fontes -> Ingestao -> Processamento (Data Lake) -> Automacao/Decisao
+         -> Visualizacao, alertas e comandos simulados em arquivo
+
+Clima JSON e diagnosticos CSV entram diretamente no motor central.
+Streaming/Docker e IA generativa sao modulos de execucao separada.
+Arduino, Serial, consulta de clima ao vivo, cameras e atuacao fisica
+sao propostas de integracao, identificadas no diagrama.
+
+--------------------------------------------------------------------
+1) FONTES DE DADOS
+--------------------------------------------------------------------
+Nos IoT de campo (NOVO - pasta 5_Coleta_Dados_IoT)
+  Na entrega, dispositivos virtuais em Python geram leituras por talhao.
+  simulacao_sensores.html reproduz os pacotes brutos no navegador.
+  Circuito complementar proposto: Arduino Uno no TinkerCad, com TMP36
+  (temperatura), sensor de umidade do solo, LDR (luminosidade),
+  potenciometro (umidade do ar), PIR (movimento) e botao (chuva).
+  O firmware proposto envia CSV pela Serial a cada leitura e tem
+  atuadores: LEDs de status, buzzer e rele da bomba de irrigacao.
+
+Clima em JSON local (2_Ingestao_Administracao_Manutencao)
+  exemplo_dados_api_clima.json representa uma resposta de API com
+  probabilidade de chuva e temperatura maxima prevista. O motor le
+  esse arquivo; nao consulta uma estacao ou servico ao vivo.
+
+Diagnosticos de lavoura (fase anterior - FIAP - Agrosmart Docker)
+  dados_agricolas.csv: amostras com diagnostico (Saudavel/Doente), tipo
+  de anomalia (Ferrugem, Antracnose, Mildio, Mancha Foliar) e % de area
+  afetada.
+
+Imagens (planejado)
+  Cameras e drones para visao computacional, previstas no modelo de
+  negocio e no desenho do Data Lake; ainda nao implementadas.
+
+--------------------------------------------------------------------
+2) INGESTAO
+--------------------------------------------------------------------
+- gerar_dados_simulados.py grava as leituras virtuais e a data/hora
+  simulada em dados_sensores_brutos.csv, a camada raw dos sensores.
+- gerar_visualizacao_simulacao.py prepara dados_simulacao.js para
+  reproduzir os pacotes brutos em simulacao_sensores.html.
+- O motor le clima JSON e diagnosticos CSV diretamente como contexto;
+  esses arquivos nao passam por processar_dados.py.
+- Gateway Serial e captura de API ao vivo sao integracoes propostas.
+- automacao_streaming.py e executado separadamente, com Python ou
+  Docker; nao e chamado por executar_pipeline_integrado.py.
+
+--------------------------------------------------------------------
+3) PROCESSAMENTO - DATA LAKE (pasta 6_Processamento_Dados)
+--------------------------------------------------------------------
+processar_dados.py organiza os sensores conforme as camadas logicas
+do Data Lake, usando arquivos locais, sem servico de nuvem:
+- Raw: dados_sensores_brutos.csv como foi gerado pela simulacao Python.
+- Trusted: validacao de schema, tipos e faixas fisicas; linhas
+  invalidas vao para quarentena.csv; duplicadas sao removidas.
+- Refined: dados ordenados por talhao e horario, com variaveis
+  derivadas (dia/noite, ponto de orvalho, VPD, media movel do solo,
+  horas seguidas de UR alta, lacunas) e um resumo por talhao.
+
+--------------------------------------------------------------------
+4) AUTOMACAO E LOGICA DE DECISAO
+--------------------------------------------------------------------
+Motor de inferencia (NOVO - pasta 7_Automacao_Inteligente)
+  motor_decisao.py cruza sensores (refined) + clima + diagnosticos.
+  15 regras encadeadas derivam fatos (solo_seco, estresse_hidrico,
+  risco_fungico_alto, intrusao...) e 9 regras de acao geram alertas
+  com nivel de risco (NORMAL, ATENCAO, ALTO, CRITICO), recomendacoes
+  e comandos simulados I/D registrados em comandos_atuadores.txt.
+
+Regras de diagnostico (fase anterior)
+  definir_acao() em automacao_streaming.py classifica cada amostra de
+  doenca em 4 niveis de intervencao.
+
+IA generativa (fase anterior - 3_IA_Generativa_Apoio_Decisao)
+  gerar_relatorio_ia.py e um modulo de execucao separada que usa os
+  diagnosticos da fase anterior. Tem modo simulado e opcao de API
+  com chave configurada. Nao e chamado pelo executor integrado e
+  nao consome automaticamente dados_processados.csv dos sensores.
+
+--------------------------------------------------------------------
+5) VISUALIZACAO E ACAO
+--------------------------------------------------------------------
+- Painel (dashboard.html): status atual de cada talhao, graficos de
+  24 h de solo, temperatura e umidade do ar com os limites das regras,
+  e a linha do tempo de alertas. HTML unico, abre em qualquer navegador.
+- relatorio_alertas.txt / alertas.json: alertas legiveis e em formato
+  para integracao com outros sistemas.
+- relatorio_intervencao.txt: saida do streaming de diagnosticos.
+- Relatorio executivo da IA generativa.
+- Comandos aos atuadores ('I' liga e 'D' desliga a bomba) gravados em
+  arquivo nesta demonstracao. A devolucao ao no pela Serial e proposta
+  de integracao, ainda nao executada, na area de componentes propostos.
+
+--------------------------------------------------------------------
+6) TECNOLOGIAS
+--------------------------------------------------------------------
+Fluxo entregue: Python 3 (biblioteca padrao), arquivos CSV/JSON,
+HTML/JavaScript e SVG. Docker e IA generativa pertencem aos modulos
+anteriores de execucao separada; Arduino C++ e TinkerCad sao proposta
+de circuito. gerar_diagrama.py regenera o SVG e, com Pillow instalado,
+o PNG. Pillow nao e necessario para rodar a demonstracao.
+
+Para rodar a parte nova de ponta a ponta:
+    python executar_pipeline_integrado.py

@@ -1,0 +1,79 @@
+%% AgroSmart - Arquitetura final (Fase 7). Fonte editavel; renderiza no GitHub e em mermaid.live.
+%% Linha cheia = executado no pipeline. Tracejada = proposto/planejado (sem execucao).
+flowchart LR
+    subgraph FONTES["1 - Fontes de dados"]
+        IOT["Nos IoT simulados<br/>NODE-01..03 (T1..T3)<br/>gerar_dados_simulados.py"]
+        CLIMA["Clima (JSON de API)<br/>exemplo_dados_api_clima.json"]
+        DIAG["Diagnosticos de lavoura<br/>dados_agricolas.csv"]
+        ARD["Arduino / TinkerCad<br/>agrosmart_no_sensor.ino"]:::proposto
+        CAM["Cameras / drones"]:::proposto
+    end
+
+    subgraph LAKE["2 - Data Lake (arquivos locais)"]
+        RAW[("RAW<br/>dados_sensores_brutos.csv<br/>144 leituras")]
+        TRU["TRUSTED<br/>processar_dados.py<br/>schema, tipos, faixas, dedup"]
+        QUA[("quarentena.csv<br/>3 leituras + motivo")]
+        REF[("REFINED<br/>dados_processados.csv (140)<br/>resumo_por_talhao.csv")]
+    end
+
+    subgraph DEC["3 - Automacao e decisao"]
+        MOT["Motor de regras<br/>motor_decisao.py<br/>R01-R15 + A01-A09<br/>forward chaining"]
+        IA["IA generativa<br/>gerar_relatorio_ia.py<br/>(execucao separada)"]:::separado
+        STR["Streaming de diagnosticos<br/>automacao_streaming.py<br/>(container legado)"]:::separado
+    end
+
+    subgraph OUT["4 - Saidas"]
+        DASH["dashboard.html<br/>(painel agronomico)"]
+        ALE["alertas.json<br/>relatorio_alertas.txt"]
+        CMD["comandos_atuadores.txt<br/>'I' liga / 'D' desliga bomba"]
+        REL["relatorio_intervencao.txt"]
+        BOMBA["Bomba / rele fisico"]:::proposto
+    end
+
+    subgraph OPS["5 - Operacao e monitoramento (NOVO Fase 7)"]
+        ORQ["orquestrador.py<br/>ciclos agendados, retry,<br/>timeout, SIGTERM"]
+        LOG[("logs/agrosmart.jsonl<br/>logs estruturados")]
+        IND[("indicadores_ultimo_ciclo.json<br/>historico_execucoes.csv")]
+        PAINEL["painel_operacao.html"]
+        HC["healthcheck.py<br/>(HEALTHCHECK Docker)"]
+    end
+
+    subgraph PM["6 - Process mining (NOVO Fase 7)"]
+        EL[("event_log.csv<br/>case = leitura")]
+        ANA["analisar_processo.py<br/>DFG, variantes, gargalos"]
+        RPM["analise_processo.md<br/>fluxo_processo.mmd"]
+    end
+
+    subgraph DEVSEC["7 - DevSecOps (NOVO Fase 7)"]
+        GHA["GitHub Actions<br/>devsecops.yml"]
+        QUAL["ruff + pytest (21 testes)"]
+        SEC["pip-audit + Trivy fs<br/>(vuln, segredo, misconfig)"]
+        IMG["Docker python:3.12-slim<br/>usuario nao-root uid 10001<br/>smoke test + Trivy imagem"]
+    end
+
+    IOT --> RAW
+    ARD -.-> RAW
+    CAM -.-> LAKE
+    RAW --> TRU
+    TRU -->|invalida| QUA
+    TRU -->|valida| REF
+    REF --> MOT
+    QUA --> MOT
+    CLIMA --> MOT
+    DIAG --> MOT
+    DIAG --> STR --> REL --> IA
+    MOT --> DASH & ALE & CMD
+    CMD -.-> BOMBA
+
+    ORQ ==>|executa a cada ciclo| TRU
+    ORQ ==> MOT
+    ORQ ==> EL
+    ORQ --> LOG & IND --> PAINEL
+    IND --> HC
+    RAW & QUA & REF & ALE --> EL --> ANA --> RPM
+
+    GHA --> QUAL & SEC & IMG
+    IMG -.->|empacota| ORQ
+
+    classDef proposto stroke-dasharray: 6 4,fill:#f8f5ef,stroke:#9e8f6a;
+    classDef separado fill:#eef1f8,stroke:#7a86a8;

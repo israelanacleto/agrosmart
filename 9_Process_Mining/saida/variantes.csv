@@ -1,0 +1,6 @@
+variante,casos,pct_casos,sequencia
+V1,132,91.67,Leitura recebida > Validacao (trusted) > Enriquecimento (refined) > Avaliacao no motor de regras > Publicacao (painel e relatorios)
+V2,6,4.17,Leitura recebida > Validacao (trusted) > Enriquecimento (refined) > Avaliacao no motor de regras > Alerta emitido > Publicacao (painel e relatorios)
+V3,3,2.08,Leitura recebida > Validacao (trusted) > Enviada para quarentena
+V4,2,1.39,Leitura recebida > Validacao (trusted) > Enriquecimento (refined) > Avaliacao no motor de regras > Alerta emitido > Comando para atuador > Publicacao (painel e relatorios)
+V5,1,0.69,Leitura recebida > Validacao (trusted) > Descartada como duplicada

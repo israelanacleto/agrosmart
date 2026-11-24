@@ -1,0 +1,267 @@
+{
+  "gerado_em": "24/11/2026 20:02",
+  "contexto_externo": {
+    "risco_chuva_previsto_pct": 15,
+    "temp_max_prevista_c": 31,
+    "focos_fungicos_ativos": 11,
+    "maior_area_afetada_pct": 32.4
+  },
+  "status_por_talhao": {
+    "T1": {
+      "no_sensor": "NODE-01",
+      "ultima_leitura": "2026-05-17 23:30",
+      "nivel": "NORMAL",
+      "acoes": [],
+      "regras_disparadas": [
+        {
+          "regra": "R10",
+          "conclusao": "temperatura_favoravel_fungo",
+          "descricao": "Temperatura media das ultimas 24 h entre 15 e 28 C"
+        },
+        {
+          "regra": "R12",
+          "conclusao": "inoculo_presente",
+          "descricao": "Ha focos fungicos ativos nos diagnosticos da propriedade"
+        }
+      ],
+      "fatos": {
+        "temperatura_c": 20.3,
+        "umidade_ar_pct": 72,
+        "umidade_solo_pct": 60,
+        "vpd_kpa": 0.67,
+        "movimento": 0,
+        "periodo": "noite",
+        "chuva_ultimas_2h": 0,
+        "lacunas_2h": 0,
+        "rejeitadas_2h": 0,
+        "max_horas_ur_alta_24h": 0.0,
+        "temp_media_24h": 22.9,
+        "risco_chuva_previsto_pct": 15,
+        "temp_max_prevista_c": 31,
+        "focos_fungicos_ativos": 11,
+        "maior_area_afetada_pct": 32.4
+      }
+    },
+    "T2": {
+      "no_sensor": "NODE-02",
+      "ultima_leitura": "2026-05-17 23:30",
+      "nivel": "CRITICO",
+      "acoes": [
+        {
+          "acao": "A01",
+          "nivel": "CRITICO",
+          "mensagem": "Solo em nivel critico de umidade",
+          "recomendacao": "Irrigar imediatamente (comando simulado gerado automaticamente).",
+          "comando": "I",
+          "evidencias": [
+            "R02"
+          ]
+        }
+      ],
+      "regras_disparadas": [
+        {
+          "regra": "R01",
+          "conclusao": "solo_seco",
+          "descricao": "Umidade do solo abaixo de 30%"
+        },
+        {
+          "regra": "R02",
+          "conclusao": "solo_critico",
+          "descricao": "Umidade do solo abaixo de 20%"
+        },
+        {
+          "regra": "R12",
+          "conclusao": "inoculo_presente",
+          "descricao": "Ha focos fungicos ativos nos diagnosticos da propriedade"
+        }
+      ],
+      "fatos": {
+        "temperatura_c": 24.9,
+        "umidade_ar_pct": 52,
+        "umidade_solo_pct": 17,
+        "vpd_kpa": 1.51,
+        "movimento": 0,
+        "periodo": "noite",
+        "chuva_ultimas_2h": 0,
+        "lacunas_2h": 0,
+        "rejeitadas_2h": 0,
+        "max_horas_ur_alta_24h": 0.0,
+        "temp_media_24h": 28.4,
+        "risco_chuva_previsto_pct": 15,
+        "temp_max_prevista_c": 31,
+        "focos_fungicos_ativos": 11,
+        "maior_area_afetada_pct": 32.4
+      }
+    },
+    "T3": {
+      "no_sensor": "NODE-03",
+      "ultima_leitura": "2026-05-17 23:30",
+      "nivel": "ALTO",
+      "acoes": [
+        {
+          "acao": "A06",
+          "nivel": "ALTO",
+          "mensagem": "Alto risco de doenca fungica",
+          "recomendacao": "Inspecionar folhas em 24 h e aplicar fungicida preventivo se houver sintomas.",
+          "comando": null,
+          "evidencias": [
+            "R09",
+            "R10",
+            "R11",
+            "R12",
+            "R13"
+          ]
+        }
+      ],
+      "regras_disparadas": [
+        {
+          "regra": "R09",
+          "conclusao": "molhamento_prolongado",
+          "descricao": "Ar com UR >= 85% por 6 h seguidas ou mais nas ultimas 24 h"
+        },
+        {
+          "regra": "R10",
+          "conclusao": "temperatura_favoravel_fungo",
+          "descricao": "Temperatura media das ultimas 24 h entre 15 e 28 C"
+        },
+        {
+          "regra": "R11",
+          "conclusao": "ambiente_favoravel_fungo",
+          "descricao": "Molhamento prolongado com temperatura favoravel"
+        },
+        {
+          "regra": "R12",
+          "conclusao": "inoculo_presente",
+          "descricao": "Ha focos fungicos ativos nos diagnosticos da propriedade"
+        },
+        {
+          "regra": "R13",
+          "conclusao": "risco_fungico_alto",
+          "descricao": "Ambiente favoravel a fungo com inoculo presente"
+        }
+      ],
+      "fatos": {
+        "temperatura_c": 19.0,
+        "umidade_ar_pct": 90,
+        "umidade_solo_pct": 77,
+        "vpd_kpa": 0.22,
+        "movimento": 0,
+        "periodo": "noite",
+        "chuva_ultimas_2h": 0,
+        "lacunas_2h": 0,
+        "rejeitadas_2h": 0,
+        "max_horas_ur_alta_24h": 9.5,
+        "temp_media_24h": 20.0,
+        "risco_chuva_previsto_pct": 15,
+        "temp_max_prevista_c": 31,
+        "focos_fungicos_ativos": 11,
+        "maior_area_afetada_pct": 32.4
+      }
+    }
+  },
+  "linha_do_tempo": [
+    {
+      "data_hora": "2026-05-17 02:30",
+      "talhao": "T3",
+      "acao": "A08",
+      "nivel": "ALTO",
+      "mensagem": "Movimento noturno no talhao (possivel animal/invasao)",
+      "recomendacao": "Verificar cameras/cerca e enviar equipe ao local.",
+      "comando": null,
+      "evidencias": [
+        "R14"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 06:00",
+      "talhao": "T3",
+      "acao": "A06",
+      "nivel": "ALTO",
+      "mensagem": "Alto risco de doenca fungica",
+      "recomendacao": "Inspecionar folhas em 24 h e aplicar fungicida preventivo se houver sintomas.",
+      "comando": null,
+      "evidencias": [
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 11:00",
+      "talhao": "T2",
+      "acao": "A09",
+      "nivel": "ATENCAO",
+      "mensagem": "Falha de leitura no no de sensores",
+      "recomendacao": "Verificar conexao, alimentacao e sensor do no de campo.",
+      "comando": null,
+      "evidencias": [
+        "R15"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 12:30",
+      "talhao": "T3",
+      "acao": "A09",
+      "nivel": "ATENCAO",
+      "mensagem": "Falha de leitura no no de sensores",
+      "recomendacao": "Verificar conexao, alimentacao e sensor do no de campo.",
+      "comando": null,
+      "evidencias": [
+        "R15"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 15:30",
+      "talhao": "T1",
+      "acao": "A09",
+      "nivel": "ATENCAO",
+      "mensagem": "Falha de leitura no no de sensores",
+      "recomendacao": "Verificar conexao, alimentacao e sensor do no de campo.",
+      "comando": null,
+      "evidencias": [
+        "R15"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 16:30",
+      "talhao": "T2",
+      "acao": "A02",
+      "nivel": "ALTO",
+      "mensagem": "Estresse hidrico: solo seco sob calor/ar seco",
+      "recomendacao": "Irrigar no proximo turno e priorizar o horario mais fresco.",
+      "comando": "I",
+      "evidencias": [
+        "R01",
+        "R04",
+        "R05",
+        "R06"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 20:30",
+      "talhao": "T2",
+      "acao": "A09",
+      "nivel": "ATENCAO",
+      "mensagem": "Falha de leitura no no de sensores",
+      "recomendacao": "Verificar conexao, alimentacao e sensor do no de campo.",
+      "comando": null,
+      "evidencias": [
+        "R15"
+      ]
+    },
+    {
+      "data_hora": "2026-05-17 22:00",
+      "talhao": "T2",
+      "acao": "A01",
+      "nivel": "CRITICO",
+      "mensagem": "Solo em nivel critico de umidade",
+      "recomendacao": "Irrigar imediatamente (comando simulado gerado automaticamente).",
+      "comando": "I",
+      "evidencias": [
+        "R02"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+services:
+  agrosmart-streaming:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: agrosmart-streaming:latest
+    container_name: agrosmart-streaming
+    working_dir: /app
+    # Montagem mantida da Fase 6: grava o relatorio_intervencao.txt na pasta do host.
+    # Linux: rode com AGROSMART_UID/AGROSMART_GID do seu usuario para ter permissao de escrita.
+    user: "${AGROSMART_UID:-10001}:${AGROSMART_GID:-10001}"
+    volumes:
+      - .:/app
+    environment:
+      PYTHONUNBUFFERED: "1"
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command: ["python", "automacao_streaming.py"]

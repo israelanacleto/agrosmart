@@ -1,0 +1,21 @@
+{
+  "fonte": "API_Clima_Externa",
+  "estacao": "EST-CAMPO-07",
+  "timestamp_coleta": "2026-05-17T08:00:00Z",
+  "localizacao": {
+    "latitude": -21.1775,
+    "longitude": -47.8103
+  },
+  "medicoes": {
+    "temperatura_celsius": 27.4,
+    "umidade_relativa_pct": 68,
+    "precipitacao_mm_24h": 0,
+    "velocidade_vento_kmh": 12.3,
+    "indice_uv": 7
+  },
+  "previsao_proximas_24h": {
+    "risco_chuva_pct": 15,
+    "temperatura_maxima_celsius": 31,
+    "temperatura_minima_celsius": 19
+  }
+}

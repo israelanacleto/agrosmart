@@ -1,0 +1,32 @@
+flowchart TD
+    n0(["INICIO<br/>144 casos"])
+    nF(["FIM"])
+    n1["Leitura recebida<br/>144 eventos"]
+    n2["Validacao (trusted)<br/>144 eventos"]
+    n3["Enriquecimento (refined)<br/>140 eventos"]
+    n4["Avaliacao no motor de regras<br/>140 eventos"]
+    n5["Publicacao (painel e relatorios)<br/>140 eventos"]
+    n6["Alerta emitido<br/>8 eventos"]
+    n9["Descartada como duplicada<br/>1 eventos"]
+    n7["Enviada para quarentena<br/>3 eventos"]
+    n8["Comando para atuador<br/>2 eventos"]
+    n1 -->|"144x · media 30.0 min"| n2
+    n0 -->|"144x"| n1
+    n2 -->|"140x · media 1.0 ms"| n3
+    n3 -->|"140x · media 1.0 ms"| n4
+    n5 -->|"140x"| nF
+    n4 -->|"132x · media 1.0 ms"| n5
+    n4 -->|"8x · media 1.0 ms"| n6
+    n6 -->|"6x · media 1.0 ms"| n5
+    n2 -->|"3x · media 1.0 ms"| n7
+    n7 -->|"3x"| nF
+    n6 -->|"2x · media 1.0 ms"| n8
+    n8 -->|"2x · media 1.0 ms"| n5
+    n2 -->|"1x · media 1.0 ms"| n9
+    n9 -->|"1x"| nF
+    classDef desvio fill:#fdecea,stroke:#c62828;
+    classDef acao fill:#fff4e5,stroke:#b26a00;
+    class n7 desvio;
+    class n9 desvio;
+    class n6 acao;
+    class n8 acao;

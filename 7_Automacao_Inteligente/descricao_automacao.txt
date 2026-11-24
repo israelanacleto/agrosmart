@@ -1,0 +1,140 @@
+====================================================================
+AUTOMACAO INTELIGENTE BASEADA EM DADOS - AGROSMART
+====================================================================
+
+Codigo:  motor_decisao.py  (Python 3, apenas biblioteca padrao)
+Uso:     python motor_decisao.py   (rodar antes 6_Processamento_Dados/processar_dados.py)
+
+--------------------------------------------------------------------
+1) TIPO DE AUTOMACAO
+--------------------------------------------------------------------
+Motor inferencial baseado em regras, com encadeamento progressivo
+(forward chaining). Optamos por regras em vez de Machine Learning porque:
+  - ainda nao ha historico rotulado suficiente para treinar um modelo;
+  - as regras seguem conhecimento agronomico conhecido (limites de
+    umidade do solo, molhamento foliar para fungos, VPD);
+  - cada decisao e explicavel: o alerta mostra quais regras o geraram.
+Quando a camada refined acumular historico com o resultado real das
+acoes, o mesmo dataset pode ser usado para treinar um classificador
+que substitua ou calibre os limiares das regras.
+
+--------------------------------------------------------------------
+2) DADOS QUE O MOTOR INTERPRETA (base de fatos)
+--------------------------------------------------------------------
+- Leitura atual do talhao: temperatura, UR, umidade do solo, VPD,
+  movimento, periodo (dia/noite)
+- Janela de 2 h: chuva registrada, leituras perdidas ou rejeitadas
+- Janela de 24 h: maximo de horas seguidas com UR >= 85%, temperatura media
+- API de clima: probabilidade de chuva prevista, maxima prevista
+- Diagnosticos da lavoura (dados_agricolas.csv): quantidade de focos
+  fungicos ativos (Ferrugem, Antracnose, Mildio, Mancha Foliar)
+
+--------------------------------------------------------------------
+3) REGRAS DE INFERENCIA (derivam fatos novos)
+--------------------------------------------------------------------
+R01 solo < 30% ........................................ solo_seco
+R02 solo < 20% ........................................ solo_critico
+R03 solo > 85% ........................................ solo_encharcado
+R04 temperatura >= 32 C ............................... calor_intenso
+R05 VPD >= 2,0 kPa .................................... ar_seco
+R06 solo_seco E (calor_intenso OU ar_seco) ............ estresse_hidrico
+R07 chuva no pluviometro nas ultimas 2 h .............. chuva_recente
+R08 API preve chuva >= 60% ............................ chuva_prevista
+R09 >= 6 h seguidas com UR >= 85% nas ultimas 24 h .... molhamento_prolongado
+R10 temperatura media 24 h entre 15 e 28 C ............ temperatura_favoravel_fungo
+R11 molhamento_prolongado E temperatura_favoravel ..... ambiente_favoravel_fungo
+R12 ha focos fungicos nos diagnosticos ................ inoculo_presente
+R13 ambiente_favoravel_fungo E inoculo_presente ....... risco_fungico_alto
+R14 movimento no PIR durante a noite .................. intrusao
+R15 leitura perdida/rejeitada nas ultimas 2 h ......... falha_sensor
+
+R06, R11 e R13 so disparam porque outras regras ja criaram os fatos de
+que dependem: o motor repete o ciclo ate nao surgir nenhum fato novo.
+
+--------------------------------------------------------------------
+4) DECISOES AUTOMATIZADAS (regras de acao)
+--------------------------------------------------------------------
+Acao  Nivel    Quando                                   O que o sistema faz
+----  -------  ---------------------------------------  -------------------------------------
+A01   CRITICO  solo_critico, sem chuva recente/prevista  registra comando simulado 'I' para irrigacao
+A02   ALTO     estresse_hidrico, sem chuva               registra 'I' e recomenda irrigar no horario fresco
+A03   ATENCAO  solo_seco (sem estresse)                  programa irrigacao no proximo ciclo
+A04   ATENCAO  solo_seco, mas chuva recente/prevista     adia irrigacao (economia de agua)
+A05   ATENCAO  solo_encharcado                           registra 'D' (desligar bomba), checar drenagem
+A06   ALTO     risco_fungico_alto                        inspecao em 24 h + fungicida preventivo
+A07   ATENCAO  ambiente_favoravel_fungo sem inoculo      intensifica monitoramento visual
+A08   ALTO     intrusao                                  alerta para verificar cameras/cerca
+A09   ATENCAO  falha_sensor                              chamado de manutencao do no de campo
+
+Classificacao de risco do talhao = maior nivel entre as acoes ativas
+(NORMAL < ATENCAO < ALTO < CRITICO). Um alerta e emitido so quando a
+acao comeca a valer, para nao repetir a mesma mensagem a cada leitura.
+
+As leituras do dia sao reproduzidas em ordem cronologica, como se
+chegassem em tempo real. Nesta demonstracao os comandos 'I'/'D' ficam
+gravados em saida/comandos_atuadores.txt (e nao voltam para a serie
+simulada); por isso o solo de T2 continua secando nos dados. Em campo,
+uma integracao futura faria o gateway repassar o comando para a Serial
+do no correspondente. Nao ha gateway ou acionamento fisico em execucao.
+
+--------------------------------------------------------------------
+5) SAIDAS GERADAS
+--------------------------------------------------------------------
+saida/alertas.json ............ status por talhao, fatos, regras disparadas
+                                e linha do tempo (para integracao com outros sistemas)
+saida/relatorio_alertas.txt ... relatorio legivel para o produtor
+saida/comandos_atuadores.txt .. fila de comandos para os nos de campo
+saida/dashboard.html .......... painel de visualizacao (abrir no navegador)
+saida/print_dashboard.png ..... captura do painel
+
+--------------------------------------------------------------------
+6) EXEMPLO DE SAIDA (saida/relatorio_alertas.txt)
+--------------------------------------------------------------------
+RELATORIO DE DECISAO AUTOMATIZADA - AGROSMART
+
+Gerado em: 13/10/2026 21:23
+Contexto externo: chuva prevista 15% | max prevista 31 C | focos fungicos ativos 11 (maior area afetada 32.4%)
+
+========================================
+SITUACAO ATUAL POR TALHAO
+========================================
+
+Talhao T1 (NODE-01)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: NORMAL
+Leitura: 20.3 C | UR 72% | solo 60% | VPD 0.67 kPa | 0.0 h de UR>=85% (24 h)
+  - Nenhuma acao necessaria: manter monitoramento.
+  Fatos inferidos: temperatura_favoravel_fungo (R10), inoculo_presente (R12)
+
+Talhao T2 (NODE-02)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: CRITICO
+Leitura: 24.9 C | UR 52% | solo 17% | VPD 1.51 kPa | 0.0 h de UR>=85% (24 h)
+  - [CRITICO] Solo em nivel critico de umidade: Irrigar imediatamente (comando simulado gerado automaticamente).  [comando 'I' registrado para NODE-02]
+      porque R02: Umidade do solo abaixo de 20%
+  Fatos inferidos: solo_seco (R01), solo_critico (R02), inoculo_presente (R12)
+
+Talhao T3 (NODE-03)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: ALTO
+Leitura: 19.0 C | UR 90% | solo 77% | VPD 0.22 kPa | 9.5 h de UR>=85% (24 h)
+  - [ALTO] Alto risco de doenca fungica: Inspecionar folhas em 24 h e aplicar fungicida preventivo se houver sintomas.
+      porque R09: Ar com UR >= 85% por 6 h seguidas ou mais nas ultimas 24 h
+      porque R10: Temperatura media das ultimas 24 h entre 15 e 28 C
+      porque R11: Molhamento prolongado com temperatura favoravel
+      porque R12: Ha focos fungicos ativos nos diagnosticos da propriedade
+      porque R13: Ambiente favoravel a fungo com inoculo presente
+  Fatos inferidos: molhamento_prolongado (R09), temperatura_favoravel_fungo (R10), ambiente_favoravel_fungo (R11), inoculo_presente (R12), risco_fungico_alto (R13)
+
+========================================
+LINHA DO TEMPO DE ALERTAS (24 h)
+========================================
+2026-05-17 02:30  T3  ALTO     Movimento noturno no talhao (possivel animal/invasao)
+2026-05-17 06:00  T3  ALTO     Alto risco de doenca fungica
+2026-05-17 11:00  T2  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 12:30  T3  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 15:30  T1  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 16:30  T2  ALTO     Estresse hidrico: solo seco sob calor/ar seco
+2026-05-17 20:30  T2  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 22:00  T2  CRITICO  Solo em nivel critico de umidade
+
+Comandos gerados (saida/comandos_atuadores.txt):
+2026-05-17 16:30  NODE-02  'I'  (Estresse hidrico: solo seco sob calor/ar seco)
+2026-05-17 22:00  NODE-02  'I'  (Solo em nivel critico de umidade)

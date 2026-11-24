@@ -1,0 +1,15 @@
+de,para,frequencia,espera_media_s,espera_mediana_s,espera_max_s
+Leitura recebida,Validacao (trusted),144,1797.147,1797.001,1799.001
+INICIO,Leitura recebida,144,0.0,0.0,0.0
+Validacao (trusted),Enriquecimento (refined),140,0.001,0.001,0.001
+Enriquecimento (refined),Avaliacao no motor de regras,140,0.001,0.001,0.001
+Publicacao (painel e relatorios),FIM,140,0.0,0.0,0.0
+Avaliacao no motor de regras,Publicacao (painel e relatorios),132,0.001,0.001,0.001
+Avaliacao no motor de regras,Alerta emitido,8,0.001,0.001,0.001
+Alerta emitido,Publicacao (painel e relatorios),6,0.001,0.001,0.001
+Validacao (trusted),Enviada para quarentena,3,0.001,0.001,0.001
+Enviada para quarentena,FIM,3,0.0,0.0,0.0
+Alerta emitido,Comando para atuador,2,0.001,0.001,0.001
+Comando para atuador,Publicacao (painel e relatorios),2,0.001,0.001,0.001
+Validacao (trusted),Descartada como duplicada,1,0.001,0.001,0.001
+Descartada como duplicada,FIM,1,0.0,0.0,0.0

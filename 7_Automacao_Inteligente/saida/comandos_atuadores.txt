@@ -1,0 +1,5 @@
+FILA DE COMANDOS SIMULADOS PARA OS NOS DE CAMPO (sem envio Serial)
+'I' = liga bomba | 'D' = desliga bomba
+
+2026-05-17 16:30  NODE-02  'I'  (Estresse hidrico: solo seco sob calor/ar seco)
+2026-05-17 22:00  NODE-02  'I'  (Solo em nivel critico de umidade)

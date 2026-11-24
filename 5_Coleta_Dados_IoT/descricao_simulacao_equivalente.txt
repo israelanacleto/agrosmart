@@ -1,0 +1,44 @@
+COLETA POR DISPOSITIVOS SIMULADOS — EVIDENCIA DA EXECUCAO
+======================================================
+
+Ferramenta utilizada nesta entrega: simulador de ambiente em Python
+com reprodutor visual HTML/JavaScript. A atividade permite dados de
+dispositivos simulados e captura de ferramenta equivalente.
+
+Artefatos:
+- gerar_dados_simulados.py: modelo de ambiente e dispositivos virtuais.
+- dados_sensores_brutos.csv: pacotes gerados pelo simulador.
+- gerar_visualizacao_simulacao.py: incorpora o CSV em dados_simulacao.js.
+- simulacao_sensores.html: tela interativa de reproducao das leituras.
+- captura_simulacao_python.jpg: captura real do reprodutor no navegador.
+- descricao_sensores.txt: grandezas e mapeamento do circuito proposto.
+
+Como reproduzir (Python 3, sem bibliotecas adicionais):
+1. Na raiz, execute python executar_pipeline_integrado.py --gerar-dados.
+2. Abra 5_Coleta_Dados_IoT/simulacao_sensores.html no navegador.
+3. Clique em Iniciar reproducao ou avance com Proxima leitura.
+4. Use Ir para cenario para observar movimento, chuva ou falha.
+5. O monitor mostra os pacotes CSV antes do processamento.
+6. Abra o dashboard pelo link ao final para conferir os resultados.
+
+O modelo gera 24 horas em tres talhoes, com pacotes a cada 30 minutos,
+usando semente 42 para reproduzir os mesmos dados. Injeta falhas de
+sensor/transmissao para demonstrar limpeza e quarentena. A reproducao
+visual avanca um horario simulado a cada 1,2 segundo; nao e coleta real.
+
+Sensores virtuais: temperatura (TMP36), umidade do solo, luminosidade
+(LDR), umidade do ar (potenciometro no circuito proposto), movimento
+(PIR) e evento de chuva (botao no circuito proposto).
+
+Limites da demonstracao:
+O reprodutor exibe dados gerados em Python. Nao executa o sketch .ino,
+nao valida eletricamente as ligacoes e nao representa TinkerCad.
+O circuito SVG/PNG e o firmware sao artefatos de uma montagem proposta.
+Nao ha captura de circuito Arduino executando nesta entrega.
+O estado de bomba exibido vem do CSV bruto; comandos do motor central
+sao saidas simuladas em arquivo, sem conexao Serial com equipamento.
+
+No cenario 02:30, NODE-03 registra movimento=1 na baixada umida.
+No cenario 03:00, chuva=1 nos tres talhoes.
+No cenario 10:30, NODE-02 registra -50 graus Celsius, falha intencional
+encaminhada a quarentena pelo processamento.

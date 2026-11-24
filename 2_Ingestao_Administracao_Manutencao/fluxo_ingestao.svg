@@ -1,0 +1,52 @@
+<svg width="100%" viewBox="0 0 680 600" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Fluxo de ingestão de dados do AgroSmart</title>
+<desc>Múltiplas fontes de dados são capturadas, validadas e armazenadas na camada bruta do Data Lake, sob um processo contínuo de manutenção e confiabilidade.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<g><rect x="40" y="40" width="135" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="107" y="58" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">Arquivos</text>
+<text x="107" y="76" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#444441">CSV, planilhas</text></g>
+
+<g><rect x="190" y="40" width="135" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="257" y="58" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">Sensores IoT</text>
+<text x="257" y="76" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#444441">Streaming 3s</text></g>
+
+<g><rect x="340" y="40" width="135" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="407" y="58" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">Imagens</text>
+<text x="407" y="76" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#444441">Câmeras, drones</text></g>
+
+<g><rect x="490" y="40" width="135" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="557" y="58" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">API externa</text>
+<text x="557" y="76" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#444441">Clima, mercado</text></g>
+
+<line x1="107" y1="96" x2="107" y2="156" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="257" y1="96" x2="257" y2="156" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="407" y1="96" x2="407" y2="156" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="557" y1="96" x2="557" y2="156" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g><rect x="40" y="156" width="585" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="332" y="174" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#0C447C">Ingestão</text>
+<text x="332" y="192" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#185FA5">Captura contínua das fontes</text></g>
+
+<line x1="332" y1="212" x2="332" y2="272" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g><rect x="40" y="272" width="585" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="332" y="290" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#085041">Validação e qualidade</text>
+<text x="332" y="308" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#0F6E56">Schema, tipos e duplicidade</text></g>
+
+<line x1="332" y1="328" x2="332" y2="388" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g><rect x="40" y="388" width="585" height="56" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="332" y="406" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#633806">Armazenamento bruto (raw)</text>
+<text x="332" y="424" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#854F0B">Data lake com metadados</text></g>
+
+<line x1="332" y1="444" x2="332" y2="504" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g><rect x="40" y="504" width="585" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="332" y="522" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">Manutenção e confiabilidade</text>
+<text x="332" y="540" text-anchor="middle" dominant-baseline="central" font-family="Arial, sans-serif" font-size="12" fill="#444441">Monitoramento, backup e retenção</text></g>
+</svg>

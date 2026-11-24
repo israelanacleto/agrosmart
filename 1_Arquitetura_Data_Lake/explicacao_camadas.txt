@@ -1,0 +1,51 @@
+====================================================================
+ARQUITETURA DE DATA LAKE - AGROSMART
+Explicacao das camadas
+====================================================================
+
+O Data Lake do AgroSmart recebe dados estruturados (leituras de sensores
+IoT em CSV, respostas de APIs externas) e nao estruturados (imagens de
+cameras e drones usadas na visao computacional agricola, ja prevista no
+modelo de negocio da solucao) e os organiza em tres camadas, do dado
+bruto ate o dado pronto para uso.
+
+--------------------------------------------------------------------
+1) CAMADA BRUTA (RAW)
+--------------------------------------------------------------------
+Armazena os dados exatamente como chegam das fontes, sem qualquer
+transformacao. Cada registro e gravado com metadados de origem e
+timestamp de ingestao (ex.: dados_agricolas.csv, imagens originais,
+payloads de API). E a camada de auditoria: nada e descartado aqui,
+mesmo dados com erro, para permitir reprocessamento futuro.
+
+--------------------------------------------------------------------
+2) CAMADA CONFIAVEL (TRUSTED)
+--------------------------------------------------------------------
+Recebe os dados da camada bruta apos validacao de schema, remocao de
+duplicidade, tratamento de valores ausentes/invalidos e padronizacao de
+formatos (datas, unidades, nomenclatura de anomalias). Nesta camada os
+dados de fontes diferentes ja podem ser cruzados (ex.: leitura de
+sensor + metadado da imagem da mesma area).
+
+--------------------------------------------------------------------
+3) CAMADA REFINADA (REFINED)
+--------------------------------------------------------------------
+Contem dados agregados e modelados para consumo direto: indicadores por
+talhao/periodo, datasets prontos para treinar modelos de Machine
+Learning (visao computacional para pragas/doencas) e o contexto
+estruturado que alimenta a IA generativa de apoio a decisao. E a
+camada usada por dashboards, relatorios e pelo sistema de alertas
+automaticos (o mesmo relatorio_intervencao.txt gerado hoje pelo
+automacao_streaming.py e um exemplo de saida desta camada).
+
+--------------------------------------------------------------------
+FLUXO GERAL
+--------------------------------------------------------------------
+Fontes (sensores, imagens, API)
+   -> Ingestao
+   -> Camada bruta (raw)
+   -> Camada confiavel (trusted)
+   -> Camada refinada (refined)
+   -> Consumo (dashboards/BI, IA generativa, alertas automaticos)
+
+Ver diagrama_data_lake.svg para a representacao visual completa.

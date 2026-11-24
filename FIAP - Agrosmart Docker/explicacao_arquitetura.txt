@@ -1,0 +1,49 @@
+EXPLICACAO DA ARQUITETURA - CONTAINERIZACAO DA SOLUCAO
+
+A solucao foi containerizada com Docker e orquestrada com Docker Compose.
+A aplicacao principal e o script Python automacao_streaming.py, responsavel por
+simular o processamento continuo de dados agricolas a partir do arquivo
+dados_agricolas.csv.
+
+O container utiliza a imagem oficial python:3.12-slim, uma versao enxuta do
+Python adequada para executar a aplicacao com menor tamanho de imagem. Ao
+iniciar, o container executa automaticamente o comando:
+
+python automacao_streaming.py
+
+Durante a execucao, o script le as amostras do arquivo dados_agricolas.csv,
+processa cada registro simulando um fluxo de streaming, aplica regras de
+decisao para definir a acao agricola recomendada e gera o arquivo
+relatorio_intervencao.txt com o resultado final.
+
+O Docker Compose define o servico agrosmart-streaming, realiza o build da
+imagem a partir do Dockerfile e monta a pasta local do projeto dentro do
+container no diretorio /app. Essa montagem permite que o container acesse os
+arquivos de entrada e grave o relatorio final diretamente na raiz do projeto.
+
+ARQUIVOS PRINCIPAIS
+
+- Dockerfile: define a imagem Python, o diretorio de trabalho e o comando de
+  inicializacao da aplicacao.
+- docker-compose.yml: define o servico agrosmart-streaming e permite executar
+  a solucao com um unico comando.
+- .dockerignore: remove arquivos desnecessarios do contexto de build,
+  deixando a criacao da imagem mais limpa e eficiente.
+- automacao_streaming.py: script principal da aplicacao.
+- dados_agricolas.csv: arquivo de entrada com os dados simulados dos sensores.
+- relatorio_intervencao.txt: arquivo de saida gerado apos o processamento.
+
+COMANDO DE EXECUCAO
+
+docker compose up --build
+
+VALIDACAO DO FUNCIONAMENTO
+
+Para validar a solucao, deve-se executar o comando docker compose up --build
+na raiz do projeto. O terminal deve exibir as amostras sendo processadas pelo
+servico agrosmart-streaming e, ao final, a mensagem de sucesso informando que
+o arquivo relatorio_intervencao.txt foi gerado.
+
+Apos a execucao, o arquivo relatorio_intervencao.txt deve estar presente na
+raiz do projeto contendo o total de amostras processadas e as acoes automaticas
+definidas pelo sistema.

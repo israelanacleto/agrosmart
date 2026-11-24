@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>AgroSmart - Painel de operacao</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial,sans-serif;margin:24px;color:#244337;background:#f6faf7}
+h1{margin:0 0 4px} .sub{color:#668576;margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px}
+.card{background:#fff;border:1px solid #cfe0d5;border-radius:10px;padding:12px}
+.card span{display:block;font-size:13px;color:#668576} .card b{font-size:22px}
+table{border-collapse:collapse;width:100%;background:#fff;margin-bottom:20px;font-size:14px}
+th,td{border:1px solid #cfe0d5;padding:6px 8px;text-align:left} th{background:#eef6f0}
+</style></head><body>
+<h1>AgroSmart | Painel de operacao do pipeline</h1>
+<div class="sub">Execucao 20261124-200224-a8877f | ciclo 2 | 2026-11-24T20:02:25
+ | gerado pelo orquestrador (8_Execucao_Monitorada)</div>
+<div class="cards"><div class="card"><span>Status do ultimo ciclo</span><b>SUCESSO</b></div><div class="card"><span>Duracao do ciclo</span><b>586.5 ms</b></div><div class="card"><span>Leituras raw</span><b>144</b></div><div class="card"><span>Validas (refined)</span><b>140</b></div><div class="card"><span>Quarentena</span><b>3</b></div><div class="card"><span>Duplicadas</span><b>1</b></div><div class="card"><span>Alertas</span><b>8</b></div><div class="card"><span>Comandos p/ atuadores</span><b>2</b></div></div>
+<h2>Risco atual por talhao (motor de decisao)</h2><ul><li><b>T1</b>: NORMAL</li><li><b>T2</b>: CRITICO</li><li><b>T3</b>: ALTO</li></ul>
+<h2>Etapas do ultimo ciclo</h2>
+<table><tr><th>Etapa</th><th>Status</th><th>Duracao (ms)</th><th>Tentativas</th><th>Erro</th></tr><tr><td>coleta_simulada</td><td style='color:#2e7d32'>SUCESSO</td><td>78.8</td><td>1</td><td></td></tr><tr><td>visualizacao</td><td style='color:#2e7d32'>SUCESSO</td><td>83.0</td><td>1</td><td></td></tr><tr><td>processamento</td><td style='color:#2e7d32'>SUCESSO</td><td>114.8</td><td>1</td><td></td></tr><tr><td>motor_decisao</td><td style='color:#2e7d32'>SUCESSO</td><td>132.7</td><td>1</td><td></td></tr><tr><td>event_log</td><td style='color:#2e7d32'>SUCESSO</td><td>20.3</td><td>1</td><td></td></tr><tr><td>process_mining</td><td style='color:#2e7d32'>SUCESSO</td><td>148.9</td><td>1</td><td></td></tr><tr><td>indicadores</td><td style='color:#2e7d32'>SUCESSO</td><td>1.5</td><td>1</td><td></td></tr></table>
+<h2>Historico de ciclos (ultimos 50)</h2>
+<table><tr><th>Inicio</th><th>Status</th><th>Duracao (ms)</th><th>Raw</th><th>Quarentena</th><th>Duplicadas</th>
+<th>Validos</th><th>Alertas</th><th>Comandos</th><th>Etapa com falha</th></tr><tr><td>2026-11-24T20:02:24</td><td style='color:#2e7d32'>SUCESSO</td><td>586.5</td><td>144</td><td>3</td><td>1</td><td>140</td><td>8</td><td>2</td><td></td></tr><tr><td>2026-11-24T20:02:22</td><td style='color:#2e7d32'>SUCESSO</td><td>627.5</td><td>144</td><td>3</td><td>1</td><td>140</td><td>8</td><td>2</td><td></td></tr></table>
+<p>Logs estruturados: <code>saida/logs/agrosmart.jsonl</code> | Painel agronomico:
+<code>7_Automacao_Inteligente/saida/dashboard.html</code> | Process mining:
+<code>9_Process_Mining/saida/analise_processo.md</code></p>
+</body></html>

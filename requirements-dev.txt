@@ -1,0 +1,7 @@
+-r requirements.txt
+pytest==9.2.0
+ruff==0.17.6
+pip-audit==2.10.1
+# Transitiva do pip-audit. A 4.1.0 tem 17 CVEs apontadas pelo proprio pip-audit; a correcao (4.2.1+)
+# exige Python >= 3.11. CI e Docker usam 3.12. Em Python 3.10 local o alerta permanece (so ferramenta de dev).
+filelock>=4.2.1; python_version >= "3.11"

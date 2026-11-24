@@ -1,0 +1,127 @@
+# NOVO (Fase 7) - Pipeline DevSecOps do AgroSmart.
+#   qualidade  -> ruff (lint + regras de seguranca S/bandit) e pytest (unitarios + ponta a ponta)
+#   seguranca  -> pip-audit (dependencias Python) e Trivy filesystem (vulnerabilidades, segredos, misconfig)
+#   container  -> build da imagem, smoke test em container (nao-root, numeros golden, healthcheck) e Trivy na imagem
+name: DevSecOps
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.12"
+  IMAGEM: agrosmart:${{ github.sha }}
+
+jobs:
+  qualidade:
+    name: Qualidade (ruff + pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Instalar ferramentas
+        run: pip install -r requirements-dev.txt
+      - name: Lint e regras de seguranca (ruff)
+        run: ruff check . --output-format github
+      - name: Testes (unitarios + ponta a ponta)
+        run: python -m pytest -v --junitxml=relatorio-testes.xml
+      - name: Execucao de referencia (1 ciclo) para evidencias
+        run: python 8_Execucao_Monitorada/orquestrador.py --ciclos 1 --nivel-log WARNING
+      - name: Publicar evidencias
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-qualidade
+          path: |
+            relatorio-testes.xml
+            8_Execucao_Monitorada/saida/
+            9_Process_Mining/saida/
+            7_Automacao_Inteligente/saida/alertas.json
+            7_Automacao_Inteligente/saida/comandos_atuadores.txt
+
+  seguranca:
+    name: Seguranca (pip-audit + Trivy fs)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Instalar pip-audit
+        run: pip install pip-audit==2.10.1
+      - name: pip-audit (runtime)
+        run: pip-audit -r requirements.txt --strict
+      - name: pip-audit (ferramentas de dev/CI)
+        run: pip-audit -r requirements-dev.txt
+      - name: Trivy filesystem (vulnerabilidades, segredos e misconfig)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+
+  container:
+    name: Build + smoke test em container + Trivy imagem
+    runs-on: ubuntu-latest
+    needs: qualidade
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build da imagem
+        run: docker build -t "$IMAGEM" .
+      - name: Smoke test - usuario nao-root
+        run: |
+          uid=$(docker run --rm --entrypoint id "$IMAGEM" -u)
+          echo "uid dentro do container: $uid"
+          test "$uid" != "0"
+      - name: Smoke test - 1 ciclo completo do pipeline em container
+        run: |
+          mkdir -p evid && chmod 777 evid
+          docker run --name agrosmart-smoke -e AGROSMART_CICLOS=1 -e AGROSMART_GERAR_DADOS=1 \
+            -v "$PWD/evid:/app/8_Execucao_Monitorada/saida" "$IMAGEM"
+          docker run --rm -v "$PWD/evid:/evid" --entrypoint python "$IMAGEM" -c "
+          import json, sys
+          d = json.load(open('/evid/indicadores_ultimo_ciclo.json', encoding='utf-8'))
+          r, dec = d['registros'], d['decisao']
+          print(json.dumps({'status': d['status'], **r, 'alertas': dec['alertas'],
+                            'comandos': dec['comandos_atuadores']}, ensure_ascii=False))
+          ok = (d['status'] == 'SUCESSO' and r['raw'] == 144 and r['quarentena'] == 3
+                and r['duplicadas'] == 1 and r['validos'] == 140 and dec['alertas'] == 8
+                and dec['comandos_atuadores'] == 2)
+          sys.exit(0 if ok else 1)"
+      - name: Smoke test - healthcheck do container
+        run: |
+          docker run -d --name agrosmart-loop -e AGROSMART_CICLOS=0 -e AGROSMART_INTERVALO_S=5 "$IMAGEM"
+          for i in $(seq 1 30); do
+            estado=$(docker inspect -f '{{.State.Health.Status}}' agrosmart-loop)
+            echo "health: $estado"; [ "$estado" = "healthy" ] && break; sleep 3
+          done
+          docker logs agrosmart-loop | tail -n 5
+          test "$(docker inspect -f '{{.State.Health.Status}}' agrosmart-loop)" = "healthy"
+          docker stop agrosmart-loop
+      - name: Trivy na imagem
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGEM }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+      - name: Publicar evidencias do container
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-container
+          path: evid/

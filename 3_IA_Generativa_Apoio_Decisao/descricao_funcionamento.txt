@@ -1,0 +1,44 @@
+====================================================================
+IA GENERATIVA PARA APOIO A DECISAO - DESCRICAO DO FUNCIONAMENTO
+====================================================================
+
+CONTEXTO UTILIZADO
+A IA generativa nao substitui o motor de regras deterministico ja
+existente (funcao definir_acao em automacao_streaming.py); ela atua em
+uma camada acima, na camada refinada do Data Lake. O contexto de
+entrada e o conjunto de amostras ja processado (mesmo conteudo do
+relatorio_intervencao.txt): id da amostra, data de leitura,
+diagnostico, tipo de anomalia, percentual de area afetada e a acao
+automatica ja definida pelas regras.
+
+FUNCIONAMENTO
+1. O pipeline reune os registros da camada refinada referentes ao
+   periodo desejado (ex.: o lote de 14 amostras mais recente).
+2. Esses dados sao inseridos em um prompt (ver prompt_utilizado.txt)
+   que instrui o modelo a atuar como agronomo assistente e produzir um
+   relatorio executivo em linguagem natural.
+3. O prompt e enviado a um modelo de linguagem generativo (ex.:
+   Claude). O modelo correlaciona os registros -- nao apenas le cada
+   linha isoladamente -- identificando padroes como a progressao de
+   uma anomalia ao longo de leituras consecutivas do mesmo talhao.
+4. A saida (exemplo em exemplo_saida_ia.txt) e um texto estruturado com
+   resumo geral, pontos de atencao prioritaria, recomendacoes praticas
+   e tendencia observada.
+
+PAPEL NO APOIO A DECISAO
+O motor de regras (definir_acao) ja classifica cada amostra
+individualmente em um nivel de acao. A IA generativa agrega essas
+classificacoes no tempo e entre talhoes, traduzindo numeros em uma
+narrativa priorizada que o produtor consegue ler e agir rapidamente,
+inclusive apontando tendencias que uma regra fixa por amostra nao
+enxerga sozinha (ex.: uma anomalia que ainda esta em "aviso", mas cujo
+ritmo de crescimento e preocupante). A decisao final de intervencao
+continua sendo do produtor/agronomo.
+
+MODO SIMULADO x REAL
+Esta entrega documenta a simulacao: o prompt e o exemplo de saida
+foram gerados a partir dos dados reais do projeto. Em uma
+implementacao real, o script gerar_relatorio_ia.py (nesta mesma pasta)
+mostra como o mesmo prompt seria enviado a uma API de IA generativa
+real; na ausencia de uma chave de API configurada, ele usa o relatorio
+simulado como retorno.

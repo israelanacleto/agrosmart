@@ -1,0 +1,30 @@
+[project]
+name = "agrosmart"
+version = "7.0.0"
+description = "AgroSmart - plataforma de monitoramento agricola (FIAP, Fase 7)"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+# E/W pycodestyle, F pyflakes, B bugbear, S bandit (seguranca), I imports
+select = ["E", "W", "F", "B", "S", "I"]
+ignore = [
+    "E741",  # variavel `l` no codigo legado do Ryan (mantido para nao reescrever a base)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S603", "E731"]          # assert e subprocess sao esperados nos testes
+"executar_pipeline_integrado.py" = ["S603"]   # executa scripts do proprio projeto
+"8_Execucao_Monitorada/orquestrador.py" = ["S603"]
+# codigo legado do Ryan: excecoes justificadas, sem reescrever a base
+"4_Arquitetura_Solucao/gerar_diagrama.py" = ["E501"]        # coordenadas do desenho SVG em linha unica
+"5_Coleta_Dados_IoT/gerar_dados_simulados.py" = ["S311"]    # random com seed fixa para SIMULACAO, nao cripto
+"6_Processamento_Dados/processar_dados.py" = ["B905"]       # tamanho da linha ja validado antes do zip()

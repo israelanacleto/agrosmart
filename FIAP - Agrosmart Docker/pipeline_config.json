@@ -1,0 +1,27 @@
+{
+  "pipeline_name": "AgroSmart_Continuous_Data_Simulation",
+  "version": "1.0.0",
+  "source": {
+    "type": "Sensor_Mock_CSV_Stream",
+    "file_origin": "dados_agricolas.csv",
+    "frequency_seconds": 3
+  },
+  "ingestion_engine": {
+    "environment": "Cloudera_QuickStart_VM_CentOS",
+    "runtime": "Python_Streaming_Simulator"
+  },
+  "processing_rules": {
+    "critical_alert_threshold_percent": 25.0,
+    "target_anomalies": ["Ferrugem", "Antracnose", "Míldio", "Mancha Foliar"]
+  },
+  "sinks": [
+    {
+      "type": "Terminal_Stdout_Realtime",
+      "format": "Log_String"
+    },
+    {
+      "type": "File_System_TXT",
+      "path": "relatorio_intervencao.txt"
+    }
+  ]
+}

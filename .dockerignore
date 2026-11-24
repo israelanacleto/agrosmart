@@ -1,0 +1,22 @@
+# Contexto de build minimo: o Dockerfile copia arquivos explicitamente.
+.git/
+.github/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+**/__pycache__/
+**/*.py[cod]
+.pytest_cache/
+.ruff_cache/
+tests/
+fase7_entrega/
+**/saida/
+**/*.png
+**/*.jpg
+**/*.mp4
+**/*.pdf
+**/*.svg
+**/*.log
+integrantes.txt

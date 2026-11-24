@@ -1,0 +1,86 @@
+====================================================================
+PROCESSAMENTO E PREPARACAO DOS DADOS - AGROSMART
+====================================================================
+
+Script: processar_dados.py (Python 3, apenas biblioteca padrao)
+Uso:    python processar_dados.py
+
+--------------------------------------------------------------------
+1) FLUXO DOS DADOS
+--------------------------------------------------------------------
+
+  Dispositivos virtuais (gerar_dados_simulados.py)
+      | Geracao de leituras de sensores e eventos simulados
+      v
+  Gerador Python -> acrescenta data/hora simulada (recebido_em)
+      |
+      v
+  [RAW]  5_Coleta_Dados_IoT/dados_sensores_brutos.csv
+      |  1. Leitura do arquivo e conferencia do cabecalho (schema)
+      v
+  [TRUSTED]
+      |  2. Validacao de cada linha:
+      |     - numero de campos correto (pega linha truncada)
+      |     - nenhum campo vazio
+      |     - conversao de tipos (data/hora, numeros, eventos 0/1)
+      |     - faixas fisicas: temperatura -10..60 C; UR, solo e luz 0..100%
+      |     -> linha invalida vai para quarentena.csv com o motivo
+      |  3. Remocao de duplicadas (mesmo no_sensor + mesmo millis)
+      v
+  [REFINED]
+      |  4. Organizacao: ordena por talhao e horario; separa data e hora
+      |  5. Transformacao / variaveis derivadas (por talhao):
+      |     - periodo ............ dia ou noite (luminosidade >= 10%)
+      |     - ponto_orvalho_c .... formula de Magnus-Tetens
+      |     - vpd_kpa ............ deficit de pressao de vapor (estresse da planta)
+      |     - solo_media_movel_3 . suaviza o ruido do sensor de solo
+      |     - delta_solo ......... variacao em relacao a leitura anterior
+      |     - horas_ur_alta_consecutivas  horas seguidas com UR >= 85%
+      |                                   (molhamento foliar: risco de fungo)
+      |     - intervalo_min / lacuna ...  detecta leituras perdidas
+      |  6. Agregacao por talhao (resumo_por_talhao.csv)
+      v
+  saida/dados_processados.csv  -> entrada do motor de decisao (7_Automacao_Inteligente)
+
+--------------------------------------------------------------------
+2) RESULTADO DA EXECUCAO
+--------------------------------------------------------------------
+Linhas lidas (raw) .............. 144
+Enviadas para quarentena ........ 3
+   - linha 66 (T2): temperatura_c=-50.0 fora da faixa [-10.0, 60.0]
+   - linha 77 (T3): campo vazio: umidade_solo_pct
+   - linha 94 (T1): linha incompleta (6 de 11 campos)
+Duplicadas removidas ............ 1
+Leituras validas (refined) ...... 140
+   - lacuna em T1: 60 min sem leitura antes de 15:30
+   - lacuna em T2: 60 min sem leitura antes de 11:00
+   - lacuna em T2: 60 min sem leitura antes de 20:30
+   - lacuna em T3: 60 min sem leitura antes de 12:30
+
+--------------------------------------------------------------------
+3) EXEMPLO DO DATASET PROCESSADO
+--------------------------------------------------------------------
+Arquivo completo: saida/dados_processados.csv (140 linhas, 20 colunas).
+Trecho do talhao T3 na madrugada (molhamento foliar acumulando):
+
+data_hora,data,hora,periodo,talhao,no_sensor,temperatura_c,umidade_ar_pct,umidade_solo_pct,luminosidade_pct,movimento,chuva,bomba,ponto_orvalho_c,vpd_kpa,solo_media_movel_3,delta_solo,horas_ur_alta_consecutivas,intervalo_min,lacuna
+2026-05-17 02:00:04,2026-05-17,02:00,noite,T3,NODE-03,15.8,96,75,0,0,0,0,15.2,0.07,75.7,-1,2.0,30,0
+2026-05-17 02:30:05,2026-05-17,02:30,noite,T3,NODE-03,16.2,95,76,0,1,0,0,15.4,0.09,75.7,1,2.5,30,0
+2026-05-17 03:00:01,2026-05-17,03:00,noite,T3,NODE-03,16.1,100,78,0,1,1,0,16.1,0.0,76.3,2,3.0,30,0
+2026-05-17 03:30:05,2026-05-17,03:30,noite,T3,NODE-03,15.4,100,81,0,0,1,0,15.4,0.0,78.3,3,3.5,30,0
+2026-05-17 04:00:04,2026-05-17,04:00,noite,T3,NODE-03,15.2,97,80,0,0,0,0,14.7,0.05,79.7,-1,4.0,30,0
+2026-05-17 04:30:05,2026-05-17,04:30,noite,T3,NODE-03,14.7,96,80,0,0,0,0,14.1,0.07,80.3,0,4.5,30,0
+
+Resumo por talhao (saida/resumo_por_talhao.csv):
+
+talhao,no_sensor,leituras_validas,leituras_quarentena,lacunas,temp_min_c,temp_media_c,temp_max_c,ur_media_pct,max_horas_ur_alta,vpd_max_kpa,solo_inicial_pct,solo_final_pct,solo_min_pct,eventos_chuva,movimentos_noite,movimentos_dia
+T1,NODE-01,47,1,1,15.5,22.9,30.2,64.5,0.0,2.36,64,60,60,2,0,1
+T2,NODE-02,46,1,2,20.5,28.4,36.3,46.1,0.0,4.36,43,17,17,2,0,0
+T3,NODE-03,47,1,1,14.6,20.0,25.7,82.7,9.5,1.04,75,77,75,2,2,0
+
+Leituras rejeitadas (saida/quarentena.csv):
+
+linha_arquivo,talhao,motivo,conteudo_original
+66,T2,"temperatura_c=-50.0 fora da faixa [-10.0, 60.0]","2026-05-17 10:30:01,NODE-02,T2,151920000,-50.0,41,40,83,0,0,0"
+77,T3,campo vazio: umidade_solo_pct,"2026-05-17 12:00:03,NODE-03,T3,77041000,23.7,70,,79,0,0,0"
+94,T1,linha incompleta (6 de 11 campos),"2026-05-17 15:00:03,NODE-01,T1,126720000,30.2,46"

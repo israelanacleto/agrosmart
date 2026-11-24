@@ -1,0 +1,58 @@
+AGROSMART — GUIA DOS CINCO ITENS DA ENTREGA
+=========================================
+
+Executar: python executar_pipeline_integrado.py --gerar-dados
+Requer Python 3. Usa somente a biblioteca padrao.
+Os HTML e as imagens entregues tambem podem ser abertos sem Python.
+
+1. INTEGRACAO DA ARQUITETURA
+4_Arquitetura_Solucao/diagrama_arquitetura.svg (tambem .png)
+4_Arquitetura_Solucao/descricao_componentes.txt
+Fontes -> processamento -> motor de regras -> dashboard e comandos.
+Os componentes planejados sao distinguidos dos scripts executaveis.
+O motor le clima JSON e diagnosticos CSV como contexto local.
+Arduino/Serial, API ao vivo e atuacao fisica aparecem como propostas;
+streaming/Docker e IA generativa sao modulos de execucao separada.
+
+2. COLETA DE DADOS DO AMBIENTE
+5_Coleta_Dados_IoT/captura_simulacao_python.jpg
+5_Coleta_Dados_IoT/simulacao_sensores.html
+5_Coleta_Dados_IoT/descricao_simulacao_equivalente.txt
+5_Coleta_Dados_IoT/descricao_sensores.txt
+5_Coleta_Dados_IoT/gerar_dados_simulados.py
+5_Coleta_Dados_IoT/dados_sensores_brutos.csv
+Ferramenta: simulacao de dispositivos em Python com reproducao visual.
+O circuito e o firmware Arduino sao uma proposta complementar.
+
+3. PROCESSAMENTO E PREPARACAO
+6_Processamento_Dados/processar_dados.py
+6_Processamento_Dados/saida/dados_processados.csv
+6_Processamento_Dados/saida/resumo_por_talhao.csv
+6_Processamento_Dados/saida/quarentena.csv
+6_Processamento_Dados/fluxo_dados.txt
+
+4. AUTOMACAO INTELIGENTE
+7_Automacao_Inteligente/motor_decisao.py
+7_Automacao_Inteligente/descricao_automacao.txt
+7_Automacao_Inteligente/saida/alertas.json
+7_Automacao_Inteligente/saida/relatorio_alertas.txt
+7_Automacao_Inteligente/saida/comandos_atuadores.txt
+Motor inferencial por regras com alertas, recomendacoes e comandos
+simulados. Os comandos nao sao enviados a uma bomba fisica.
+
+5. DASHBOARD ANALITICO
+7_Automacao_Inteligente/saida/dashboard.html
+7_Automacao_Inteligente/saida/print_dashboard.png
+7_Automacao_Inteligente/saida/print_dashboard_indicadores.png
+7_Automacao_Inteligente/saida/print_dashboard_graficos.png
+7_Automacao_Inteligente/saida/print_dashboard_alertas.png
+Capturas tambem em JPG. A imagem completa reune as tres capturas
+consecutivas do painel para preservar a legibilidade da entrega.
+7_Automacao_Inteligente/descricao_indicadores.txt
+HTML offline com indicadores, evolucao temporal e alertas por talhao.
+
+EVIDENCIA E ESCOPO
+Dados de ambiente simulados em 17/05/2026; nao sao medicoes reais.
+A captura de simulacao e do reprodutor dos pacotes gerados em Python.
+A geracao do painel tem sua propria data, distinta da data dos dados.
+Esta entrega usa a alternativa de dispositivos simulados do enunciado.

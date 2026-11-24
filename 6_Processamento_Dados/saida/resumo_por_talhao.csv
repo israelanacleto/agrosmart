@@ -1,0 +1,4 @@
+talhao,no_sensor,leituras_validas,leituras_quarentena,lacunas,temp_min_c,temp_media_c,temp_max_c,ur_media_pct,max_horas_ur_alta,vpd_max_kpa,solo_inicial_pct,solo_final_pct,solo_min_pct,eventos_chuva,movimentos_noite,movimentos_dia
+T1,NODE-01,47,1,1,15.5,22.9,30.2,64.5,0.0,2.36,64,60,60,2,0,1
+T2,NODE-02,46,1,2,20.5,28.4,36.3,46.1,0.0,4.36,43,17,17,2,0,0
+T3,NODE-03,47,1,1,14.6,20.0,25.7,82.7,9.5,1.04,75,77,75,2,2,0

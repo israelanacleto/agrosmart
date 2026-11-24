@@ -1,0 +1,44 @@
+RELATORIO DE DECISAO AUTOMATIZADA - AGROSMART
+
+Gerado em: 24/11/2026 20:02
+Contexto externo: chuva prevista 15% | max prevista 31 C | focos fungicos ativos 11 (maior area afetada 32.4%)
+
+========================================
+SITUACAO ATUAL POR TALHAO
+========================================
+
+Talhao T1 (NODE-01)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: NORMAL
+Leitura: 20.3 C | UR 72% | solo 60% | VPD 0.67 kPa | 0.0 h de UR>=85% (24 h)
+  - Nenhuma acao necessaria: manter monitoramento.
+  Fatos inferidos: temperatura_favoravel_fungo (R10), inoculo_presente (R12)
+
+Talhao T2 (NODE-02)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: CRITICO
+Leitura: 24.9 C | UR 52% | solo 17% | VPD 1.51 kPa | 0.0 h de UR>=85% (24 h)
+  - [CRITICO] Solo em nivel critico de umidade: Irrigar imediatamente (comando simulado gerado automaticamente).  [comando 'I' -> NODE-02]
+      porque R02: Umidade do solo abaixo de 20%
+  Fatos inferidos: solo_seco (R01), solo_critico (R02), inoculo_presente (R12)
+
+Talhao T3 (NODE-03)  |  ultima leitura 2026-05-17 23:30
+Classificacao de risco: ALTO
+Leitura: 19.0 C | UR 90% | solo 77% | VPD 0.22 kPa | 9.5 h de UR>=85% (24 h)
+  - [ALTO] Alto risco de doenca fungica: Inspecionar folhas em 24 h e aplicar fungicida preventivo se houver sintomas.
+      porque R09: Ar com UR >= 85% por 6 h seguidas ou mais nas ultimas 24 h
+      porque R10: Temperatura media das ultimas 24 h entre 15 e 28 C
+      porque R11: Molhamento prolongado com temperatura favoravel
+      porque R12: Ha focos fungicos ativos nos diagnosticos da propriedade
+      porque R13: Ambiente favoravel a fungo com inoculo presente
+  Fatos inferidos: molhamento_prolongado (R09), temperatura_favoravel_fungo (R10), ambiente_favoravel_fungo (R11), inoculo_presente (R12), risco_fungico_alto (R13)
+
+========================================
+LINHA DO TEMPO DE ALERTAS (24 h)
+========================================
+2026-05-17 02:30  T3  ALTO     Movimento noturno no talhao (possivel animal/invasao)
+2026-05-17 06:00  T3  ALTO     Alto risco de doenca fungica
+2026-05-17 11:00  T2  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 12:30  T3  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 15:30  T1  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 16:30  T2  ALTO     Estresse hidrico: solo seco sob calor/ar seco
+2026-05-17 20:30  T2  ATENCAO  Falha de leitura no no de sensores
+2026-05-17 22:00  T2  CRITICO  Solo em nivel critico de umidade

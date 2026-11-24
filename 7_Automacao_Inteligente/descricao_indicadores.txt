@@ -1,0 +1,66 @@
+DASHBOARD ANALITICO AGROSMART — INDICADORES E INTERPRETACAO
+========================================================
+
+Arquivo: saida/dashboard.html
+Captura: saida/print_dashboard.png
+Capturas por secao: saida/print_dashboard_indicadores.png,
+saida/print_dashboard_graficos.png e saida/print_dashboard_alertas.png.
+Tambem disponiveis em JPG. A captura completa reune as tres secoes.
+Tecnologia: HTML, JavaScript e graficos SVG, sem servicos externos.
+Abra o HTML no navegador. Nao e necessario Power BI ou Tableau.
+Atualizacao: execute python executar_pipeline_integrado.py e reabra o painel.
+O dashboard mostra uma serie simulada de 17/05/2026, nao dados atuais.
+A data de geracao do painel e diferente da data de coleta dos sensores.
+
+1. SITUACAO ATUAL POR TALHAO
+- Temperatura do ar (graus Celsius): ultima leitura valida do talhao.
+- Umidade do solo (%): ultima leitura valida; indica disponibilidade
+  relativa de agua no modelo simulado, sem calibracao agronomica real.
+- Umidade relativa do ar (%): ultima leitura valida; ajuda a interpretar
+  condicoes de molhamento e risco fungico.
+- Nivel de risco: maior severidade entre as acoes atuais do motor.
+  NORMAL, ATENCAO, ALTO ou CRITICO. As regras completas estao em
+  descricao_automacao.txt; as recomendacoes aparecem em cada cartao.
+- No de sensores e hora da leitura: identificam a origem e a atualidade
+  do dado de cada talhao.
+
+2. EVOLUCAO NO TEMPO
+Tres graficos comparam T1, T2 e T3 no dia simulado, em intervalos de
+30 minutos: umidade do solo, temperatura e umidade relativa do ar.
+Passe o cursor no grafico para consultar valores por horario.
+O foco pelo teclado permite navegar com as setas esquerda e direita.
+Linhas de referencia representam os limiares do motor central:
+- Solo abaixo de 30%: solo seco; abaixo de 20%: solo critico.
+- Temperatura a partir de 32 graus Celsius: calor intenso.
+- Umidade do ar a partir de 85%: condicao usada para calcular o tempo
+  de molhamento; risco fungico depende tambem de duracao e outros fatos.
+Os graficos unem as leituras validas disponiveis. Em horarios com
+pacotes ausentes/rejeitados, a tabela e o tooltip indicam sem leitura.
+
+3. CONTEXTO EXTERNO
+- Chuva prevista (%): probabilidade do arquivo de exemplo da API.
+- Temperatura maxima prevista (graus Celsius): previsao do mesmo arquivo.
+- Focos fungicos: quantidade de diagnosticos fungicos ativos no CSV
+  da lavoura; nao e uma contagem de sensores nem de plantas.
+- Maior area afetada (%): maior percentual de area afetada entre os
+  diagnosticos considerados. Nao equivale a media da propriedade.
+Esses valores sao exemplos locais, nao consultas meteorologicas ao vivo.
+
+4. ALERTAS E RECOMENDACOES
+A linha do tempo informa horario, talhao, nivel, mensagem, recomendacao
+e regras que fundamentaram cada alerta. O motor registra novas acoes
+conforme sua logica; nao representa uma contagem de todas as leituras.
+Comandos I/D representam ligar/desligar a bomba na demonstracao.
+A saida comandos_atuadores.txt e gerada localmente; nao comprova
+acionamento de equipamento fisico ou transmissao Serial real.
+
+5. CENARIOS DE EXEMPLO
+- T1 irrigado: solo final 60%, situacao normal.
+- T2 sequeiro: solo final 17%, alerta critico e comando de irrigacao.
+- T3 baixada umida: UR final 90%, risco fungico alto pela combinacao
+  de molhamento prolongado, temperatura favoravel e focos existentes.
+
+6. RASTREABILIDADE
+dados_sensores_brutos.csv -> processar_dados.py -> dados_processados.csv
+-> motor_decisao.py -> dados incorporados em dashboard.html.
+O arquivo HTML abre offline e contem o retrato da ultima execucao.

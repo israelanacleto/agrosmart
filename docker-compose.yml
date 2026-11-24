@@ -1,0 +1,25 @@
+# NOVO (Fase 7) - plataforma integrada em execucao continua e monitorada.
+#   docker compose up --build            (Ctrl+C ou `docker compose down` encerra de forma limpa)
+# Evidencias (logs JSON, indicadores, painel, event log) ficam em ./evidencias_docker/ no host.
+services:
+  agrosmart:
+    build: .
+    image: agrosmart:fase7
+    container_name: agrosmart
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      AGROSMART_CICLOS: ${AGROSMART_CICLOS:-0}
+      AGROSMART_INTERVALO_S: ${AGROSMART_INTERVALO_S:-30}
+    user: "${AGROSMART_UID:-10001}:${AGROSMART_GID:-10001}"
+    volumes:
+      - ./evidencias_docker/operacao:/app/8_Execucao_Monitorada/saida
+      - ./evidencias_docker/process_mining:/app/9_Process_Mining/saida
+      - ./evidencias_docker/automacao:/app/7_Automacao_Inteligente/saida
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+    stop_grace_period: 30s

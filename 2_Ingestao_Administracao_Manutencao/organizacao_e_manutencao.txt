@@ -1,0 +1,74 @@
+====================================================================
+PROCESSO DE INGESTAO, ADMINISTRACAO E MANUTENCAO DE DADOS - AGROSMART
+====================================================================
+
+--------------------------------------------------------------------
+1) FONTES SIMULADAS
+--------------------------------------------------------------------
+- Arquivos: dados_agricolas.csv (leituras de diagnostico por amostra),
+  na pasta "FIAP - Agrosmart Docker"
+- Sensores: o mesmo CSV e lido em streaming simulado (uma amostra a
+  cada 3 segundos) pelo automacao_streaming.py, representando sensores
+  de campo enviando leituras continuas
+- API externa: exemplo simulado em exemplo_dados_api_clima.json, nesta
+  mesma pasta, representando uma integracao com previsao do tempo
+- Imagens: previstas na arquitetura de Data Lake (visao computacional
+  para deteccao de pragas/doencas, ja citada no modelo de negocio do
+  AgroSmart), ingeridas como arquivos binarios com metadados associados
+
+Ver fluxo_ingestao.svg para o diagrama completo do processo.
+
+--------------------------------------------------------------------
+2) ORGANIZACAO NO DATA LAKE
+--------------------------------------------------------------------
+- Particionamento por camada (raw/trusted/refined), por fonte e por
+  data de ingestao, ex.: /raw/sensores/2026-05-17/dados_agricolas.csv
+- Cada registro ingerido carrega metadados de origem, timestamp de
+  ingestao e um identificador de amostra (id_amostra), permitindo
+  rastreabilidade completa do dado bruto ate o relatorio final
+
+--------------------------------------------------------------------
+3) QUALIDADE E VALIDACAO NA INGESTAO
+--------------------------------------------------------------------
+- Verificacao de schema (colunas obrigatorias: id_amostra, data_leitura,
+  diagnostico, tipo, area_afetada)
+- Verificacao de tipo/faixa de valor (area_afetada numerica entre 0 e
+  100)
+- Registros que falham na validacao sao movidos para uma area de
+  quarentena na camada bruta, sem interromper o restante do stream
+
+--------------------------------------------------------------------
+4) CONFIABILIDADE DO STREAMING
+--------------------------------------------------------------------
+- Leitura sequencial com tratamento de excecao (FileNotFoundError ja
+  tratado em automacao_streaming.py); em um cenario real, falhas de
+  leitura de sensor/API gerariam log de erro e nova tentativa (retry)
+  sem derrubar o pipeline
+- Logs de execucao (amostra recebida, acao executada) permitem auditar
+  se todas as amostras esperadas foram processadas
+
+--------------------------------------------------------------------
+5) VERSIONAMENTO E RETENCAO
+--------------------------------------------------------------------
+- Camada bruta: retida integralmente, e a fonte da verdade para
+  reprocessamento
+- Camada confiavel/refinada: versionada a cada execucao do pipeline
+  (nova geracao de relatorio_intervencao.txt substitui a anterior, mas
+  o historico bruto permanece disponivel)
+- Dados antigos da camada refinada podem ser arquivados apos um
+  periodo definido (ex.: 12 meses), sem impactar a camada bruta
+
+--------------------------------------------------------------------
+6) BACKUP E RECUPERACAO
+--------------------------------------------------------------------
+- A camada bruta funciona como copia de seguranca natural: qualquer
+  camada superior pode ser reconstruida reprocessando o dado bruto
+- Recomenda-se backup periodico externo da camada bruta (ex.: object
+  storage com versionamento) para recuperacao em caso de falha
+
+--------------------------------------------------------------------
+7) SEGURANCA E ACESSO
+--------------------------------------------------------------------
+- Acesso a camada bruta restrito a equipe de engenharia de dados
+- Camada refinada liberada para agronomos, produtores e para o motor
+  de IA generativa, sem exposicao de dados brutos sensiveis

@@ -1,0 +1,116 @@
+RELATORIO DE ACAO AUTOMATICA AGRICOLA (STREAM)
+
+Data de processamento: 23/06/2026 19:36
+Total de amostras processadas: 14
+
+----------------------------------------
+Amostra: AM-001  |  Leitura: 10/05/2026
+Diagnostico: Saudável
+Tipo de anomalia: Nenhuma
+Area afetada: 0.5%
+Acao executada pelo sistema:
+Acao Normal: manter rotina de monitoramento e registrar status normal.
+
+----------------------------------------
+Amostra: AM-002  |  Leitura: 10/05/2026
+Diagnostico: Saudável
+Tipo de anomalia: Nenhuma
+Area afetada: 1.8%
+Acao executada pelo sistema:
+Acao Normal: manter rotina de monitoramento e registrar status normal.
+
+----------------------------------------
+Amostra: AM-003  |  Leitura: 11/05/2026
+Diagnostico: Saudável
+Tipo de anomalia: Nenhuma
+Area afetada: 2.1%
+Acao executada pelo sistema:
+Acao Normal: manter rotina de monitoramento e registrar status normal.
+
+----------------------------------------
+Amostra: AM-004  |  Leitura: 11/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Ferrugem
+Area afetada: 15.0%
+Acao executada pelo sistema:
+Alerta Moderado: agendar inspecao preventiva no campo.
+
+----------------------------------------
+Amostra: AM-005  |  Leitura: 12/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Ferrugem
+Area afetada: 22.3%
+Acao executada pelo sistema:
+Alerta Moderado: agendar inspecao preventiva no campo.
+
+----------------------------------------
+Amostra: AM-006  |  Leitura: 12/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Ferrugem
+Area afetada: 28.7%
+Acao executada pelo sistema:
+Alerta Critico: intervencao quimica imediata recomendada.
+
+----------------------------------------
+Amostra: AM-007  |  Leitura: 13/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Antracnose
+Area afetada: 9.4%
+Acao executada pelo sistema:
+Alerta Moderado: agendar inspecao preventiva no campo.
+
+----------------------------------------
+Amostra: AM-008  |  Leitura: 13/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Antracnose
+Area afetada: 19.8%
+Acao executada pelo sistema:
+Alerta Moderado: agendar inspecao preventiva no campo.
+
+----------------------------------------
+Amostra: AM-009  |  Leitura: 14/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Antracnose
+Area afetada: 32.4%
+Acao executada pelo sistema:
+Alerta Critico: intervencao quimica imediata recomendada.
+
+----------------------------------------
+Amostra: AM-010  |  Leitura: 15/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Míldio
+Area afetada: 7.2%
+Acao executada pelo sistema:
+Aviso de Monitoramento: aplicar controle biologico e manejo preventivo integrado.
+
+----------------------------------------
+Amostra: AM-011  |  Leitura: 15/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Míldio
+Area afetada: 12.6%
+Acao executada pelo sistema:
+Aviso de Monitoramento: aplicar controle biologico e manejo preventivo integrado.
+
+----------------------------------------
+Amostra: AM-012  |  Leitura: 16/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Míldio
+Area afetada: 26.5%
+Acao executada pelo sistema:
+Alerta Critico: intervencao quimica imediata recomendada.
+
+----------------------------------------
+Amostra: AM-013  |  Leitura: 17/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Mancha Foliar
+Area afetada: 5.3%
+Acao executada pelo sistema:
+Aviso de Monitoramento: aplicar controle biologico e manejo preventivo integrado.
+
+----------------------------------------
+Amostra: AM-014  |  Leitura: 17/05/2026
+Diagnostico: Doente
+Tipo de anomalia: Mancha Foliar
+Area afetada: 14.1%
+Acao executada pelo sistema:
+Aviso de Monitoramento: aplicar controle biologico e manejo preventivo integrado.

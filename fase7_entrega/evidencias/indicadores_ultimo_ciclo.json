@@ -1,0 +1,105 @@
+{
+  "execucao_id": "20261124-200224-a8877f",
+  "ciclo": 2,
+  "status": "SUCESSO",
+  "inicio": "2026-11-24T20:02:24",
+  "fim": "2026-11-24T20:02:25",
+  "duracao_ms": 586.5,
+  "intervalo_s": 2,
+  "etapas": [
+    {
+      "etapa": "coleta_simulada",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:24.983",
+      "duracao_ms": 78.8,
+      "erro": ""
+    },
+    {
+      "etapa": "visualizacao",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.063",
+      "duracao_ms": 83.0,
+      "erro": ""
+    },
+    {
+      "etapa": "processamento",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.146",
+      "duracao_ms": 114.8,
+      "erro": ""
+    },
+    {
+      "etapa": "motor_decisao",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.261",
+      "duracao_ms": 132.7,
+      "erro": ""
+    },
+    {
+      "etapa": "event_log",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.394",
+      "duracao_ms": 20.3,
+      "erro": ""
+    },
+    {
+      "etapa": "process_mining",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.416",
+      "duracao_ms": 148.9,
+      "erro": ""
+    },
+    {
+      "etapa": "indicadores",
+      "status": "SUCESSO",
+      "tentativas": 1,
+      "inicio": "2026-11-24T20:02:25.565",
+      "duracao_ms": 1.5,
+      "erro": ""
+    }
+  ],
+  "registros": {
+    "raw": 144,
+    "quarentena": 3,
+    "duplicadas": 1,
+    "validos": 140,
+    "taxa_quarentena_pct": 2.08
+  },
+  "decisao": {
+    "alertas": 8,
+    "comandos_atuadores": 2,
+    "alertas_por_nivel": {
+      "ALTO": 3,
+      "ATENCAO": 4,
+      "CRITICO": 1
+    },
+    "nivel_por_talhao": {
+      "T1": "NORMAL",
+      "T2": "CRITICO",
+      "T3": "ALTO"
+    }
+  },
+  "quarentena_motivos": [
+    {
+      "talhao": "T2",
+      "linha": "66",
+      "motivo": "temperatura_c=-50.0 fora da faixa [-10.0, 60.0]"
+    },
+    {
+      "talhao": "T3",
+      "linha": "77",
+      "motivo": "campo vazio: umidade_solo_pct"
+    },
+    {
+      "talhao": "T1",
+      "linha": "94",
+      "motivo": "linha incompleta (6 de 11 campos)"
+    }
+  ]
+}

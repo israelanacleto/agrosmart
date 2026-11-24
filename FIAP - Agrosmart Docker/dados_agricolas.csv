@@ -1,0 +1,15 @@
+id_amostra,data_leitura,diagnostico,tipo,area_afetada
+AM-001,10/05/2026,Saudável,Nenhuma,0.5
+AM-002,10/05/2026,Saudável,Nenhuma,1.8
+AM-003,11/05/2026,Saudável,Nenhuma,2.1
+AM-004,11/05/2026,Doente,Ferrugem,15.0
+AM-005,12/05/2026,Doente,Ferrugem,22.3
+AM-006,12/05/2026,Doente,Ferrugem,28.7
+AM-007,13/05/2026,Doente,Antracnose,9.4
+AM-008,13/05/2026,Doente,Antracnose,19.8
+AM-009,14/05/2026,Doente,Antracnose,32.4
+AM-010,15/05/2026,Doente,Míldio,7.2
+AM-011,15/05/2026,Doente,Míldio,12.6
+AM-012,16/05/2026,Doente,Míldio,26.5
+AM-013,17/05/2026,Doente,Mancha Foliar,5.3
+AM-014,17/05/2026,Doente,Mancha Foliar,14.1

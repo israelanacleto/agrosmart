@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AgroSmart — Simulação de sensores</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f6f3;color:#18392b;font:16px system-ui,sans-serif}main{max-width:1160px;margin:32px auto;padding:0 24px}h1{font-size:30px;margin:8px 0}h2{font-size:19px}p{line-height:1.5}.eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;color:#32764d}.intro{color:#52665c;max-width:920px}.toolbar,.card,.monitor{background:white;border:1px solid #d8e4db;border-radius:14px;padding:20px}.toolbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:24px 0}button,select{font:inherit;padding:10px 14px;border-radius:8px;border:1px solid #b5cebe;background:white;color:#18392b;cursor:pointer}button:first-child{background:#226b45;color:white}.status{margin-left:auto;font-size:14px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card h2{margin:0}.node{font-size:13px;color:#65786d}.measure{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.measure small{display:block;color:#65786d}.measure b{font-size:24px}.events{font-size:14px;border-top:1px solid #e0e8e2;padding-top:12px;line-height:1.8}.monitor{margin-top:22px}.monitor h2{margin-top:0}pre{background:#102c20;color:#a8efc4;border-radius:8px;padding:18px;overflow:auto;font:12px/1.8 Consolas,monospace;margin-bottom:0;min-height:160px}.note{font-size:13px;color:#617568}a{color:#226b45}.stamp{font-size:13px;color:#52665c}@media(max-width:760px){.cards{grid-template-columns:1fr}.status{margin-left:0}}
+</style>
+<main>
+<div class="eyebrow">AGROSMART · COLETA DO AMBIENTE</div>
+<h1>Simulação dos sensores de campo</h1>
+<p class="intro">Reprodução interativa dos pacotes gerados pela simulação em Python. Três dispositivos virtuais representam um talhão irrigado, um de sequeiro e uma baixada úmida. Cada avanço reproduz 30 minutos do ambiente simulado.</p>
+<p class="stamp">Fonte: <code>gerar_dados_simulados.py → dados_sensores_brutos.csv</code> · Período simulado: 17/05/2026</p>
+<section class="toolbar" aria-label="Controles de reprodução">
+<button id="play">Iniciar reprodução</button><button id="next">Próxima leitura</button><button id="reset">Reiniciar</button>
+<label for="scenario">Ir para cenário</label><select id="scenario"><option value="0">00:00 · início</option><option value="5">02:30 · movimento noturno</option><option value="6">03:00 · chuva</option><option value="21">10:30 · sensor desconectado</option><option value="28">14:00 · calor intenso</option><option value="47">23:30 · solo seco</option></select>
+<strong class="status" id="status" role="status" aria-live="polite"></strong>
+</section>
+<section class="cards" id="cards" aria-label="Dispositivos simulados"></section>
+<section class="monitor"><h2>Monitor de pacotes CSV · saída do gateway simulado</h2><p class="note">Leituras brutas antes da limpeza. Falhas de transmissão e valores inválidos são exibidos como chegaram; o processamento os encaminha para quarentena.</p><pre id="serial"></pre></section>
+<p class="note">Esta ferramenta reproduz a simulação de dados do projeto. Não executa o firmware Arduino nem simula eletricamente um circuito. O campo “bomba” é o estado registrado na coleta; os comandos do motor central são apresentados no dashboard.</p>
+<p><a href="../7_Automacao_Inteligente/saida/dashboard.html">Abrir dashboard analítico →</a></p>
+</main>
+<script src="dados_simulacao.js"></script>
+<script>
+let slot=0, timer=null;
+const nomes={T1:'Irrigado',T2:'Sequeiro',T3:'Baixada úmida'};
+function campo(parent, tag, text, cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;parent.append(e);return e;}
+function horario(){return String(Math.floor(slot/2)).padStart(2,'0')+':'+(slot%2?'30':'00');}
+function render(){
+ const hora=horario();
+ const linhas=SIMULACAO.linhas.filter(l=>l.slice(11,16)===hora);
+ const cards=document.getElementById('cards');cards.replaceChildren();
+ for(const t of Object.keys(nomes)){
+  const c=campo(cards,'article','', 'card');campo(c,'h2',t+' · '+nomes[t]);
+  const l=linhas.find(l=>l.split(',')[2]===t);
+  if(!l){campo(c,'p','Pacote ausente neste horário');continue;}
+  const p=l.split(',');campo(c,'p',p[1]+' · '+p[0], 'node');
+  const m=campo(c,'div','', 'measure');
+  for(const [nome,idx,unit] of [['Temperatura',4,' °C'],['Umidade do solo',6,' %'],['Umidade do ar',5,' %'],['Luminosidade',7,' %']]){
+   const d=campo(m,'div','');campo(d,'small',nome);campo(d,'b',p[idx]!==undefined&&p[idx]!==''?p[idx]+unit:'Sem leitura');
+  }
+  const events=campo(c,'div','', 'events');
+  for(const [nome,idx] of [['PIR · movimento',8],['Chuva',9],['Bomba registrada',10]])campo(events,'div',nome+': '+(p[idx]===undefined?'Sem leitura':p[idx]==='1'?'Ativo':'Inativo'));
+  if(p.length!==11||p[6]===''||Number(p[4]) < -10||Number(p[4]) > 60)campo(events,'strong','Pacote inválido · será tratado no processamento');
+ }
+ document.getElementById('serial').textContent=SIMULACAO.cabecalho+'\n'+linhas.join('\n');
+ document.getElementById('status').textContent=(timer?'Reproduzindo':'Pausado')+' · '+hora+' · '+(slot+1)+'/48';
+ document.getElementById('next').disabled=slot===47;
+ document.getElementById('play').textContent=timer?'Pausar reprodução':'Iniciar reprodução';
+}
+function stop(){clearInterval(timer);timer=null;}
+function next(){if(slot<47)slot++;if(slot===47)stop();render();}
+document.getElementById('play').onclick=()=>{if(timer)stop();else{if(slot===47)slot=0;timer=setInterval(next,1200);}render();};
+document.getElementById('next').onclick=()=>{stop();next();};
+document.getElementById('reset').onclick=()=>{stop();slot=0;document.getElementById('scenario').value='0';render();};
+document.getElementById('scenario').onchange=e=>{stop();slot=Number(e.target.value);render();};
+render();
+</script>
+</html>

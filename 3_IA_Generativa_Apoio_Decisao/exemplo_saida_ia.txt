@@ -1,0 +1,51 @@
+====================================================================
+RELATORIO DE APOIO A DECISAO GERADO POR IA GENERATIVA
+Base: relatorio_intervencao.txt (14 amostras, 10/05/2026 a 17/05/2026)
+====================================================================
+
+RESUMO GERAL
+Das 14 amostras processadas, 3 estao saudaveis (AM-001 a AM-003, area
+afetada abaixo de 2,1%) e 11 apresentam alguma anomalia. Das amostras
+doentes, 3 ja ultrapassaram o limite critico de 25% de area afetada:
+AM-006 (Ferrugem, 28,7%), AM-009 (Antracnose, 32,4%) e AM-012 (Mildio,
+26,5%).
+
+PONTOS DE ATENCAO PRIORITARIA
+- Antracnose (AM-007 a AM-009): evolucao mais agressiva do periodo,
+  saltando de 9,4% para 32,4% de area afetada em apenas dois dias (13
+  a 14/05). Prioridade maxima de intervencao quimica.
+- Ferrugem (AM-004 a AM-006) e Mildio (AM-010 a AM-012): seguem o
+  mesmo padrao de piora progressiva a cada leitura e ja atingiram o
+  nivel critico. Ambas devem receber intervencao quimica imediata nos
+  talhoes correspondentes, conforme ja indicado pelo motor de regras.
+- Mancha Foliar (AM-013 e AM-014): ainda em nivel de aviso (5,3% para
+  14,1%), mas quase triplicou em um unico dia. Nao e critica ainda,
+  porem o ritmo de avanco e semelhante ao observado nas demais
+  anomalias antes de se tornarem criticas -- recomenda-se nova leitura
+  antecipada nesse talhao para confirmar se a tendencia se mantem.
+
+RECOMENDACOES PRATICAS
+1. Priorizar intervencao quimica imediata nos talhoes de AM-006,
+   AM-009 e AM-012, ja em alerta critico.
+2. Antecipar a proxima inspecao do talhao de Mancha Foliar
+   (AM-013/014) antes do intervalo padrao, dado o crescimento
+   acelerado.
+3. Manter monitoramento de rotina nos talhoes saudaveis (AM-001 a
+   AM-003), sem necessidade de acao corretiva no momento.
+4. Reforcar o controle biologico preventivo nos talhoes com Mildio e
+   Mancha Foliar, que respondem bem a manejo integrado antes de
+   atingir o estagio critico.
+
+TENDENCIA OBSERVADA
+Todas as quatro anomalias identificadas no periodo mostram a mesma
+tendencia: piora progressiva e rapida entre leituras consecutivas do
+mesmo talhao (2 a 3 dias). Isso sugere que o intervalo atual de
+monitoramento pode ser longo demais para conter a evolucao antes do
+estagio critico -- vale avaliar o encurtamento do ciclo de leitura
+para talhoes que ja apresentaram qualquer anomalia, mesmo que ainda
+leve.
+
+--------------------------------------------------------------------
+Este relatorio e gerado automaticamente a partir dos dados da camada
+refinada do Data Lake e serve como apoio a decisao do agronomo/
+produtor; a decisao final de intervencao permanece humana.

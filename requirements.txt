@@ -1,0 +1,6 @@
+# Runtime do pipeline AgroSmart: somente a biblioteca padrao do Python 3.10+.
+# Nenhum pacote obrigatorio (superficie de ataque minima; pip-audit roda sobre este arquivo no CI).
+#
+# Opcionais, fora do pipeline principal:
+#   anthropic   -> 3_IA_Generativa_Apoio_Decisao/gerar_relatorio_ia.py com chave real
+#   Pillow      -> 4_Arquitetura_Solucao/gerar_diagrama.py para regenerar o PNG

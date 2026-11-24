@@ -1,0 +1,88 @@
+====================================================================
+COLETA DE DADOS DO AMBIENTE (IoT / SIMULACAO) - AGROSMART
+====================================================================
+
+A coleta entregue e gerada por dispositivos virtuais em Python, um
+por talhao. A reproducao visual e a captura estao documentadas em
+descricao_simulacao_equivalente.txt. Como proposta complementar, cada
+no pode usar Arduino Uno R3 com sensores e atuadores no TinkerCad.
+O codigo proposto do no esta
+em agrosmart_no_sensor.ino e o esquema de ligacao em
+esquema_ligacao_circuito.svg / .png.
+
+--------------------------------------------------------------------
+1) SENSORES UTILIZADOS
+--------------------------------------------------------------------
+Sensor (TinkerCad)          Pino   Grandeza               Conversao no codigo
+--------------------------  -----  ---------------------  ---------------------------
+TMP36                       A0     Temperatura do ar (C)  (leitura*5/1023 - 0,5)*100
+Soil Moisture Sensor        A1     Umidade do solo (%)    map(0..876 -> 0..100)
+  (alimentado pelo D7, so durante a leitura, para reduzir corrosao)
+Fotoresistor (LDR) + 10k    A2     Luminosidade (%)       map(0..1023 -> 0..100)
+Potenciometro 10k           A3     Umidade do ar (%)      map(0..1023 -> 0..100)
+  (o TinkerCad nao tem DHT11/DHT22; o potenciometro representa a UR)
+Sensor PIR                  D2     Movimento (0/1)        evento: animal ou invasao
+Botao + resistor 10k        D3     Chuva (0/1)            evento: pluviometro de bascula
+
+Atuadores (resposta local e comandos do motor de decisao)
+--------------------------  -----  -----------------------------------------
+LED verde + 220 ohm         D11    status normal
+LED amarelo + 220 ohm       D12    atencao (solo < 30% ou UR >= 85%)
+LED vermelho + 220 ohm      D13    critico (solo < 15%)
+Buzzer piezo                D8     alarme quando o PIR detecta movimento
+Rele / motor CC             D9     bomba de irrigacao: liga sozinha com solo
+                                   < 15% (protecao local) ou por comando 'I'
+                                   enviado pela Serial; 'D' desliga
+
+Todos os componentes usam 5V e GND do Arduino via protoboard.
+
+--------------------------------------------------------------------
+2) COMO MONTAR E RODAR NO TINKERCAD
+--------------------------------------------------------------------
+1. Em tinkercad.com > Circuits > "Criar novo circuito".
+2. Arraste: Arduino Uno R3, protoboard, TMP36, Soil Moisture Sensor,
+   fotoresistor, potenciometro, sensor PIR, botao, 3 LEDs, buzzer piezo,
+   motor CC (ou rele) e os resistores (3x 220 ohm, 2x 10k).
+3. Faca as ligacoes conforme a tabela acima / esquema_ligacao_circuito.png.
+4. Em "Codigo" escolha o modo "Texto" e cole agrosmart_no_sensor.ino.
+5. Clique em "Iniciar simulacao" e abra o "Monitor serial".
+6. Clique em cada sensor e mova o controle deslizante (temperatura,
+   umidade do solo, luz, distancia do PIR), gire o potenciometro e
+   pressione o botao para gerar as situacoes descritas abaixo.
+7. Tire o print da tela com o circuito e o Monitor serial abertos e
+   salve nesta pasta como "captura_simulacao_tinkercad.png".
+
+--------------------------------------------------------------------
+3) EXEMPLO DE DADOS GERADOS
+--------------------------------------------------------------------
+a) Saida direta do Monitor serial (serial_monitor_exemplo.txt):
+
+no_sensor,talhao,millis,temperatura_c,umidade_ar_pct,umidade_solo_pct,luminosidade_pct,movimento,chuva,bomba
+NODE-01,T1,12065,25.3,58,28,83,0,0,0     solo < 30%  -> LED amarelo
+NODE-01,T1,16087,26.2,57,13,84,0,0,1     solo < 15%  -> LED vermelho + bomba
+NODE-01,T1,24131,25.8,57,41,11,1,0,0     PIR a noite -> buzzer
+
+b) Serie de 24 h de tres nos (dados_sensores_brutos.csv, 144 linhas):
+   no TinkerCad a simulacao roda poucos minutos e o Arduino nao tem
+   relogio. Para ter um dia completo de dados (ciclo de temperatura, luz
+   e umidade), gerar_dados_simulados.py reproduz o comportamento dos
+   mesmos sensores em tres talhoes, no mesmo formato da Serial, com a
+   data/hora que o gateway de campo acrescenta a cada linha:
+
+recebido_em,no_sensor,talhao,millis,temperatura_c,umidade_ar_pct,umidade_solo_pct,luminosidade_pct,movimento,chuva,bomba
+2026-05-17 14:00:04,NODE-02,T2,164521000,36.3,29,33,86,0,0,0
+2026-05-17 02:30:05,NODE-03,T3,42840000,16.2,95,76,0,1,0,0
+
+   Cenarios simulados:
+   - T1 (NODE-01): talhao irrigado, tudo dentro da faixa normal
+   - T2 (NODE-02): sequeiro em dia quente, o solo seca de 43% para 17%
+   - T3 (NODE-03): baixada umida, UR >= 85% por quase 10 h seguidas;
+     um animal aciona o PIR de madrugada
+   - chuva rapida as 03h nos tres talhoes
+
+   Falhas de campo inseridas de proposito, para a etapa de
+   processamento tratar: TMP36 desconectado (-50,0 C), campo de solo
+   vazio, linha truncada, linha duplicada pelo gateway e um pacote
+   perdido.
+
+Para gerar a serie de novo:  python gerar_dados_simulados.py

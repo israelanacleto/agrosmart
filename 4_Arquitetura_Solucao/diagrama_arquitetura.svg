@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="1000" viewBox="0 0 1360 1000" role="img"><title>Arquitetura atual da demonstracao AgroSmart</title><desc>Simulacao Python gera CSV bruto, processado e consumido por regras com clima JSON e diagnosticos CSV. O motor gera dashboard, alertas e comandos em arquivo. Componentes futuros e modulos anteriores sao indicados separadamente.</desc><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#668576"/></marker></defs><rect width="1360" height="1000" fill="white"/><text x="40" y="45" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#244337">AgroSmart | Arquitetura da demonstracao entregue</text>
+<text x="40" y="76" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#244337">Fluxo executado: simulacao Python, arquivos locais, processamento, regras e visualizacao.</text>
+<text x="1040" y="128" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#244337">COMPONENTES PROPOSTOS</text>
+<rect x="1040" y="150" width="280" height="260" rx="12" fill="#f8f5ef" stroke="#9eb7a7" stroke-dasharray="7 5"/>
+<text x="1056" y="179" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Integracao futura</text>
+<text x="1056" y="204" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Arduino / TinkerCad</text>
+<text x="1056" y="228" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Sensores e atuadores fisicos</text>
+<text x="1056" y="252" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Gateway de campo via Serial</text>
+<text x="1056" y="276" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Consulta de clima ao vivo</text>
+<text x="1056" y="300" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Envio de comandos a bomba</text>
+<text x="1056" y="324" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Cameras e drones</text>
+<text x="1056" y="390" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#244337">Sem execucao no pipeline atual.</text>
+<rect x="60" y="110" width="360" height="90" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="76" y="139" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">1. Dispositivos virtuais</text>
+<text x="76" y="164" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">gerar_dados_simulados.py</text>
+<text x="76" y="188" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">24 h, tres talhoes, falhas e eventos</text>
+<rect x="60" y="245" width="360" height="90" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="76" y="274" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">2. Coleta / camada raw</text>
+<text x="76" y="299" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">dados_sensores_brutos.csv</text>
+<text x="76" y="323" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">CSV com data/hora simulada</text>
+<rect x="550" y="245" width="410" height="90" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="566" y="274" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Clima: exemplo local de API</text>
+<text x="566" y="299" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">exemplo_dados_api_clima.json</text>
+<text x="566" y="323" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Previsao lida do JSON, sem requisicao</text>
+<rect x="60" y="380" width="360" height="110" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="76" y="409" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">3. Processamento / trusted</text>
+<text x="76" y="434" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">processar_dados.py</text>
+<text x="76" y="458" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Validacao, limpeza e deduplicacao</text>
+<text x="76" y="482" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Linhas invalidas -&gt; quarentena.csv</text>
+<rect x="550" y="380" width="410" height="90" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="566" y="409" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Diagnosticos da fase anterior</text>
+<text x="566" y="434" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">dados_agricolas.csv</text>
+<text x="566" y="458" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">CSV lido diretamente pelo motor</text>
+<rect x="60" y="535" width="360" height="90" rx="12" fill="#eef6f0" stroke="#9eb7a7"/>
+<text x="76" y="564" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Dados preparados / refined</text>
+<text x="76" y="589" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">dados_processados.csv</text>
+<text x="76" y="613" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Variaveis derivadas e resumo por talhao</text>
+<rect x="550" y="530" width="410" height="110" rx="12" fill="#f0eef9" stroke="#9eb7a7"/>
+<text x="566" y="559" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">4. Motor de decisao</text>
+<text x="566" y="584" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">motor_decisao.py</text>
+<text x="566" y="608" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">15 regras de inferencia e 9 de acao</text>
+<text x="566" y="632" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Cruza sensores + clima + diagnosticos</text>
+<rect x="60" y="720" width="360" height="110" rx="12" fill="#edf3fb" stroke="#9eb7a7"/>
+<text x="76" y="749" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Evidencia da coleta</text>
+<text x="76" y="774" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">gerar_visualizacao_simulacao.py</text>
+<text x="76" y="798" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">simulacao_sensores.html</text>
+<text x="76" y="822" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Reproducao do CSV bruto e captura</text>
+<rect x="550" y="720" width="410" height="130" rx="12" fill="#edf3fb" stroke="#9eb7a7"/>
+<text x="566" y="749" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">5. Dashboard e saidas</text>
+<text x="566" y="774" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">dashboard.html | indicadores e graficos</text>
+<text x="566" y="798" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">alertas.json e relatorio_alertas.txt</text>
+<text x="566" y="822" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">comandos_atuadores.txt: comandos I/D</text>
+<text x="566" y="846" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Registro simulado, sem atuacao fisica</text>
+<polyline points="240,200 240,245" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="240,335 240,380" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="240,490 240,535" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="420,580 550,580" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="755,470 755,530" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="960,290 995,290 995,550 960,550" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="755,640 755,720" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="60,290 35,290 35,775 60,775" fill="none" stroke="#668576" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1040" y="500" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#244337">FASES ANTERIORES</text>
+<rect x="1040" y="520" width="280" height="280" rx="12" fill="#f8f5ef" stroke="#9eb7a7"/>
+<text x="1056" y="549" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#244337">Execucao separada</text>
+<text x="1056" y="574" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">automacao_streaming.py</text>
+<text x="1056" y="598" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">CSV de diagnosticos -&gt;</text>
+<text x="1056" y="622" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">relatorio_intervencao.txt</text>
+<text x="1056" y="646" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">Docker: opcional no streaming</text>
+<text x="1056" y="670" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">gerar_relatorio_ia.py -&gt;</text>
+<text x="1056" y="694" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">relatorio executivo</text>
+<text x="1056" y="718" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#244337">IA simulada ou API com chave</text>
+<text x="1056" y="780" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#244337">Fora do executor integrado.</text>
+<text x="40" y="905" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#244337">Linhas com setas: fluxo executado na demonstracao. O reprodutor visual le a camada bruta.</text>
+<text x="40" y="935" font-family="Arial, sans-serif" font-size="18" font-weight="400" fill="#244337">Os modulos anteriores usam seus proprios arquivos; imagens, Serial e atuacao fisica sao propostas.</text>
+<text x="40" y="965" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#244337">Camadas raw / trusted / refined sao organizadas em arquivos locais, sem servico de Data Lake em nuvem.</text></svg>

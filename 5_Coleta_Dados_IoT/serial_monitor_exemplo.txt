@@ -1,0 +1,28 @@
+Exemplo da saida no Monitor Serial do TinkerCad (sketch agrosmart_no_sensor.ino)
+Durante a simulacao os controles deslizantes dos sensores foram movidos para
+provocar situacoes diferentes (comentarios a direita NAO fazem parte da saida).
+
+no_sensor,talhao,millis,temperatura_c,umidade_ar_pct,umidade_solo_pct,luminosidade_pct,movimento,chuva,bomba
+NODE-01,T1,2010,23.8,62,64,81,0,0,0        <- condicao normal: LED verde
+NODE-01,T1,4021,23.8,62,63,81,0,0,0
+NODE-01,T1,6032,24.3,61,58,82,0,0,0
+NODE-01,T1,8043,24.8,60,47,82,0,0,0        <- slider do sensor de solo sendo reduzido
+NODE-01,T1,10054,25.3,58,36,83,0,0,0
+NODE-01,T1,12065,25.3,58,28,83,0,0,0       <- solo < 30%: LED amarelo
+NODE-01,T1,14076,25.8,57,22,84,0,0,0
+NODE-01,T1,16087,26.2,57,13,84,0,0,1       <- solo < 15%: LED vermelho + bomba ligada (protecao local)
+NODE-01,T1,18098,26.2,56,13,84,0,0,1
+NODE-01,T1,20109,26.2,56,41,84,0,0,0       <- slider de solo devolvido: bomba desliga, LED verde
+NODE-01,T1,22120,25.8,57,41,12,0,0,0       <- LDR escurecido (noite)
+NODE-01,T1,24131,25.8,57,41,11,1,0,0       <- PIR acionado: buzzer toca
+NODE-01,T1,26142,25.3,58,41,11,0,0,0
+NODE-01,T1,28153,24.8,88,42,11,0,1,0       <- botao de chuva pressionado + potenciometro de UR no maximo: LED amarelo
+NODE-01,T1,30164,24.3,89,44,10,0,1,0
+NODE-01,T1,32175,24.3,88,45,10,0,0,0
+
+Observacoes
+- A temperatura varia em passos de ~0,5 C porque o conversor A/D do Arduino tem
+  10 bits: (leitura x 5 / 1023 - 0,5) x 100.
+- O campo "millis" e o tempo desde que o Arduino ligou. Como o Arduino nao tem
+  relogio, o gateway de campo acrescenta a data/hora real ao receber cada linha
+  (coluna "recebido_em" em dados_sensores_brutos.csv).
