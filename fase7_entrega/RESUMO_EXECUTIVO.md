@@ -81,6 +81,6 @@ Saídas para mostrar:
 | 2 | ~~Conferir o Actions~~ **Feito:** os 3 jobs estão verdes. O primeiro run falhou porque a tag `trivy-action@0.28.0` deixou de existir; a action foi fixada por SHA (v0.36.0) | Feito |
 | 3 | **Prints para o PDF:** Actions verde, `docker compose ps` healthy, `painel_operacao.html`, `dashboard.html` e o trecho do `analise_processo.md` | Israel |
 | 4 | **Vídeo:** o grupo decidiu não gravar. Se o enunciado da FIAP exigir link de vídeo para o pitch ou a demo, os roteiros prontos estão em `pitch_e_demo.md` | Grupo |
-| 5 | **`[A PREENCHER]` no pitch:** mercado endereçável e preço, só se houver fonte. Caso contrário, remover | Grupo |
+| 5 | ~~Dados de mercado e preço no pitch~~ **Resolvido:** o grupo não tem fonte, então foram retirados (nada inventado) | Feito |
 | 6 | **Secrets:** nenhum é necessário para o CI. `ANTHROPIC_API_KEY` só é usada se quiserem a IA real fora do pipeline; nesse caso, ela vai no `.env` local ou em GitHub Secrets, nunca no código | Opcional |
 | 7 | **Integrantes e RMs:** ficam em `integrantes.txt` local (gitignored). Colocá-los no PDF ou no formulário de entrega, não no repositório | Israel |

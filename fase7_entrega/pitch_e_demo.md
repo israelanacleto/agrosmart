@@ -1,6 +1,6 @@
 # Apresentação do produto: pitch (até 5 min) e demonstração técnica (5 a 8 min)
 
-> **Requisito 6.** O conteúdo vem do `Business_Model_Canvas_AgroSmart.pdf` e do que o código faz. Nenhum número de mercado, preço ou cliente foi inventado. Onde o grupo não tem o dado, há um `[A PREENCHER]`, que pode ser removido.
+> **Requisito 6.** O conteúdo vem do `Business_Model_Canvas_AgroSmart.pdf` e do que o código faz. Nenhum número de mercado, preço ou cliente foi inventado: o grupo não tem fonte para esses dados, por isso eles não aparecem no pitch.
 > O BMC cita os canais **SmartTillage.com** e o app **SmartTillage** (Play Store/iOS). O produto e a plataforma se chamam **AgroSmart**, e SmartTillage aparece só como nome de canal, como está no Canvas.
 
 ---
@@ -37,8 +37,6 @@ Os segmentos de clientes do BMC são:
 - **Produtores agrícolas de médio porte** que querem automatizar o monitoramento.
 - **Produtores de grande porte** que preferem **privacidade** sobre os dados das lavouras e **não querem depender de conexão de internet**.
 
-Mercado endereçável: `[A PREENCHER, se o grupo tiver fonte]`.
-
 ### Slide 6. Proposta de valor e modelo de negócio (3:30–4:30)
 - **Proposta de valor:** manter a lavoura saudável **sem análise manual prévia**, com o banco de dados atualizado em rotina constante e estável.
 - **Relacionamento:** perfil online.
@@ -56,7 +54,6 @@ Mercado endereçável: `[A PREENCHER, se o grupo tiver fonte]`.
   - auxílio na instalação;
   - cibersegurança de redes;
   - marketing.
-- Preço por talhão ou hectare: `[A PREENCHER]`.
 
 ### Slide 7. Fechamento (4:30–5:00)
 > "O AgroSmart transforma dados de campo em ação explicável, no talhão certo, na hora certa, sem depender de satélite. Hoje ele roda ponta a ponta, monitorado e auditado. O próximo passo é ligar os nós Arduino reais e a bomba física."
