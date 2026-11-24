@@ -63,7 +63,7 @@ jobs:
       - name: pip-audit (ferramentas de dev/CI)
         run: pip-audit -r requirements-dev.txt
       - name: Trivy filesystem (vulnerabilidades, segredos e misconfig)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0 (fixado por SHA)
         with:
           scan-type: fs
           scan-ref: .
@@ -112,7 +112,7 @@ jobs:
           test "$(docker inspect -f '{{.State.Health.Status}}' agrosmart-loop)" = "healthy"
           docker stop agrosmart-loop
       - name: Trivy na imagem
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0 (fixado por SHA)
         with:
           image-ref: ${{ env.IMAGEM }}
           severity: HIGH,CRITICAL
