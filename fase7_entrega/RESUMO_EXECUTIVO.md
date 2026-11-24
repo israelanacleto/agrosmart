@@ -11,7 +11,7 @@
 |---|---|---|---|
 | 1 | Arquitetura final | `descricao_arquitetura_final.md` + `arquitetura_final.mmd` | Revisão |
 | 2 | Execução ponta a ponta | `caso_de_teste_e2e.md` (entrada → saída de uma leitura real), `evidencias/` | `test_pipeline_completo_reproduz_numeros_da_base` |
-| 3 | DevSecOps | `.github/workflows/devsecops.yml`, `Dockerfile`, `.env.example`, `devsecops.md` | ruff ✅, pytest 21/21 ✅, pip-audit runtime ✅; job de container ⏳ (ver abaixo) |
+| 3 | DevSecOps | `.github/workflows/devsecops.yml`, `Dockerfile`, `.env.example`, `devsecops.md` | CI verde no GitHub Actions ([run 45507195614](https://github.com/israelanacleto/agrosmart/actions/runs/45507195614)): ruff ✅, pytest 21/21 ✅, pip-audit ✅, Trivy fs ✅, build ✅, smoke test em container (uid 10001, 144/3/1/140, 8 alertas, 2 comandos, healthy) ✅, Trivy imagem ✅ |
 | 4 | Monitoramento | `8_Execucao_Monitorada/`, `monitoramento.md` | `test_logs_estruturados…`, `test_falha_de_etapa_nao_derruba_o_loop` |
 | 5 | Process mining | `event_log.csv`, `9_Process_Mining/saida/analise_processo.md`, `process_mining.md` | `test_event_log_consistente` |
 | 6 | Pitch | `pitch_e_demo.md` (pitch ≤ 5 min + demo 5 a 8 min) | Revisão |
@@ -77,8 +77,8 @@ Saídas para mostrar:
 
 | # | Ação | Quem |
 |---|---|---|
-| 1 | **Criar o repositório no GitHub e dar push** (sugestão: público, `israelanacleto/agrosmart`). Não fiz commit nem push. Antes do push, conferir que o upstream não aponta para uma branch protegida | Israel |
-| 2 | **Conferir a primeira execução do Actions.** Os jobs `qualidade` e `seguranca` foram reproduzidos localmente. O job `container` (build, smoke e Trivy) **não pôde ser verificado localmente** porque o Docker Desktop não subiu nesta sessão. Se o Trivy apontar CVE HIGH/CRITICAL corrigível na base `python:3.12-slim`, basta rebuildar com a base atualizada | Israel |
+| 1 | ~~Criar o repositório e dar push~~ **Feito:** https://github.com/israelanacleto/agrosmart, branch `main` rastreando `origin/main` | Feito |
+| 2 | ~~Conferir o Actions~~ **Feito:** os 3 jobs estão verdes. O primeiro run falhou porque a tag `trivy-action@0.28.0` deixou de existir; a action foi fixada por SHA (v0.36.0) | Feito |
 | 3 | **Prints para o PDF:** Actions verde, `docker compose ps` healthy, `painel_operacao.html`, `dashboard.html` e o trecho do `analise_processo.md` | Israel |
 | 4 | **Vídeo:** o grupo decidiu não gravar. Se o enunciado da FIAP exigir link de vídeo para o pitch ou a demo, os roteiros prontos estão em `pitch_e_demo.md` | Grupo |
 | 5 | **`[A PREENCHER]` no pitch:** mercado endereçável e preço, só se houver fonte. Caso contrário, remover | Grupo |
